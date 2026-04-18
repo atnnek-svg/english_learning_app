@@ -250,6 +250,19 @@
   .quest-done-panel { display: none; padding-top: 10px; border-top: 1.5px dashed var(--primary); margin-top: 10px; }
   .quest-done-panel.visible { display: block; }
   .quest-done-hint { font-size: 0.78rem; color: var(--primary-dark); font-weight: 600; margin-bottom: 10px; }
+  .ca-btn {
+    display: block; width: 100%; margin-bottom: 10px; padding: 9px 14px;
+    background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px;
+    font-size: 0.83rem; font-family: inherit; font-weight: 600; color: var(--text);
+    cursor: pointer; text-align: left; transition: all 0.15s;
+  }
+  .ca-btn:hover { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); }
+  .ca-section-title { font-size: 0.8rem; font-weight: 700; color: var(--primary-dark); margin: 14px 0 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .ca-section-title:first-child { margin-top: 0; }
+  .ca-point { font-size: 0.86rem; color: var(--text); line-height: 1.7; padding: 3px 0 3px 10px; border-left: 2px solid var(--primary); margin-bottom: 4px; }
+  .ca-example { font-size: 0.86rem; color: var(--text); line-height: 1.7; padding: 4px 0; }
+  .ca-example-en { font-weight: 600; color: var(--text); }
+  .ca-example-ja { color: var(--text-muted); font-size: 0.82rem; }
   .quest-choice-row { display: flex; gap: 10px; }
   .choice-btn {
     flex: 1; padding: 11px 10px; border: none; border-radius: 12px;
@@ -329,6 +342,17 @@
         🔗 Anthropic コンソールで確認
       </a>
     </div>
+  </div>
+</div>
+
+<!-- Correct Answer modal -->
+<div class="modal-overlay" id="correctAnswerModal">
+  <div class="modal-box" style="width:540px;max-height:80vh;overflow-y:auto">
+    <div class="modal-header">
+      <div class="modal-title" id="caModalTitle">📖 正解例</div>
+      <button class="modal-close" onclick="closeCorrectAnswerModal()">✕</button>
+    </div>
+    <div class="modal-body" id="caModalBody"></div>
   </div>
 </div>
 
@@ -490,6 +514,7 @@
         <!-- Step3完了後に表示 -->
         <div class="quest-done-panel" id="step3DonePanel">
           <div class="quest-done-hint">✅ Step3完了！このまま仕上げますか？</div>
+          <button class="ca-btn" onclick="showCorrectAnswerModal()">📖 正解例を見る</button>
           <div class="quest-choice-row">
             <button class="choice-btn insight" onclick="clearQuest('insight')">
               クリアする ✅<span class="badge-label">バッジ：⚡ Insight</span>
@@ -525,50 +550,187 @@
 // ════════════════════════════════════════════════════════════
 const QUEST_DATA = [
   { level: 'beginner', label: '🟢 中学レベル', cls: 'green', badge: '🥉', quests: [
-    { id: 'b1',  words: 'see / look / watch' },
-    { id: 'b2',  words: 'say / tell / speak / talk' },
-    { id: 'b3',  words: 'go / come' },
-    { id: 'b4',  words: 'make / do' },
-    { id: 'b5',  words: 'get / take' },
-    { id: 'b6',  words: 'have / hold' },
-    { id: 'b7',  words: 'think / consider' },
-    { id: 'b8',  words: 'know / understand' },
-    { id: 'b9',  words: 'like / love / enjoy' },
-    { id: 'b10', words: 'want / need / wish' },
-    { id: 'b11', words: 'start / begin' },
-    { id: 'b12', words: 'stop / quit / finish' },
-    { id: 'b13', words: 'bring / take / carry' },
-    { id: 'b14', words: 'hear / listen' },
-    { id: 'b15', words: 'see / meet' },
+    { id: 'b1',  words: 'see / look / watch', ca: {
+      points: ['seeは受動的・自然に目に入る（意識せず見える）', 'lookは意識的に視線を向ける（見ようとする）', 'watchは動いているものを継続的に見る（じっと見守る）'],
+      examples: ['I see a bird in the tree.（木に鳥が見えます）', 'Look at the sky!（空を見てください！）', 'We watched the game together.（私たちは一緒に試合を見た）', 'I can see the mountain from here.（ここから山が見えます）', 'Watch how he does it.（彼がどうやるか見ていて）'] }},
+    { id: 'b2',  words: 'say / tell', ca: {
+      points: ['sayは「言葉を発する」行為そのもの（何を言ったか）', 'tellは「誰かに何かを伝える」（目的語が人になる）', 'say + 言葉 / tell + 人 + 内容 という形が基本'],
+      examples: ['He said "hello."（彼は「こんにちは」と言った）', 'She told me a story.（彼女は私に話を聞かせた）', 'What did she say?（彼女は何と言った？）', 'Tell me the truth.（本当のことを教えて）', 'I said I was tired.（疲れていると言った）'] }},
+    { id: 'b3',  words: 'speak / talk', ca: {
+      points: ['speakは一方的・公式的な場面でよく使う（スピーチ・言語能力）', 'talkは双方向の会話を表す（インフォーマルな場面）', 'speak a languageとは言えるがtalk a languageとは言えない'],
+      examples: ['She speaks English fluently.（彼女は流暢に英語を話す）', 'We talked for hours.（私たちは何時間も話した）', 'He spoke at the conference.（彼は会議でスピーチした）', 'Can we talk?（話せる？）', 'Please speak slowly.（ゆっくり話してください）'] }},
+    { id: 'b4',  words: 'go / come', ca: {
+      points: ['goは「話し手から離れる・向こうへ行く」', 'comeは「話し手に近づく・こちらへ来る」', '視点がどこにあるかで使い分ける'],
+      examples: ['I go to school every day.（毎日学校に行く）', 'Come here, please.（こちらへ来てください）', 'She went home early.（彼女は早く家に帰った）', 'He came to my house.（彼が私の家に来た）', 'Are you coming to the party?（パーティーに来る？）'] }},
+    { id: 'b5',  words: 'make / do', ca: {
+      points: ['makeは「何かを作る・生み出す」（新しいものが生まれる）', 'doは「行為・作業をこなす」（既存のタスクをする）', 'make a cake（ケーキを作る）/ do homework（宿題をする）が典型'],
+      examples: ['I make breakfast every morning.（毎朝朝食を作る）', 'I do homework at night.（夜に宿題をする）', 'She made a mistake.（彼女はミスをした）', 'He did his best.（彼は最善を尽くした）', 'Make a decision.（決断して）'] }},
+    { id: 'b6',  words: 'get / take', ca: {
+      points: ['getは「受け取る・手に入れる」（結果に焦点）', 'takeは「自分から取る・持っていく」（行為に焦点）', 'get a giftは「もらう」/ take a photoは「撮る」'],
+      examples: ['I got a gift.（プレゼントをもらった）', 'Take an umbrella with you.（傘を持っていって）', 'She got tired.（彼女は疲れた）', 'He took the bus.（彼はバスに乗った）', 'Get some rest.（少し休んで）'] }},
+    { id: 'b7',  words: 'have / hold', ca: {
+      points: ['haveは「所持・状態・関係を持つ」広い意味', 'holdは「手で保持する・押さえる」物理的な動作', 'have a meetingは「会議がある」/ hold a meetingは「会議を開催する」'],
+      examples: ['I have a dog.（犬を飼っています）', 'Hold this bag, please.（このバッグを持っていてください）', 'She has a meeting.（彼女は会議がある）', 'He held the door open.（彼はドアを開けて押さえた）', 'Hold on a moment.（少し待って）'] }},
+    { id: 'b8',  words: 'think / consider', ca: {
+      points: ['thinkは思う・考えるという一般的な動詞', 'considerはより深く・慎重に検討するニュアンス', 'I think so（そう思う）/ Consider all options（全選択肢を検討する）'],
+      examples: ['I think it\'s a good idea.（良いアイデアだと思う）', 'Consider all the options.（すべての選択肢を検討してください）', 'What do you think?（どう思う？）', 'She considered his offer carefully.（彼女は彼の申し出をじっくり検討した）', 'We should consider the risk.（リスクを考慮すべきだ）'] }},
+    { id: 'b9',  words: 'know / understand', ca: {
+      points: ['knowは知識・情報として知っている状態', 'understandは意味・理由・感情を深く理解する', 'I know the rule（ルールを知っている）≠ I understand the rule（ルールが分かる）'],
+      examples: ['I know her name.（彼女の名前を知っている）', 'I understand how you feel.（あなたの気持ちが分かる）', 'Do you know the answer?（答えを知っていますか？）', 'Now I understand the problem.（今、問題が分かった）', 'I don\'t understand this math.（この数学が理解できない）'] }},
+    { id: 'b10', words: 'like / love', ca: {
+      points: ['likeは一般的な好意・「好き」という気持ち', 'loveはより深い愛情・強い好み', '強さの違い：like < love'],
+      examples: ['I like this coffee.（このコーヒーが好きです）', 'I love this coffee.（このコーヒーが大好きです）', 'I like her style.（彼女のスタイルが好きです）', 'I love spending time here.（ここで過ごすのが大好きです）', 'Do you like music?（音楽は好きですか？）'] }},
+    { id: 'b11', words: 'love / enjoy', ca: {
+      points: ['loveは感情的な愛着・深い好意（状態）', 'enjoyは実際の経験から楽しむ・喜ぶ（経験）', 'enjoy + 動名詞（enjoying）の形が基本'],
+      examples: ['I love this song.（この曲が大好き）', 'I enjoy listening to music.（音楽を聴くのが楽しい）', 'She loves cooking.（彼女は料理が大好き）', 'He enjoyed the party.（彼はパーティーを楽しんだ）', 'Did you enjoy the meal?（食事は楽しめましたか？）'] }},
+    { id: 'b12', words: 'want / need', ca: {
+      points: ['wantは「欲しい・したい」という欲求・希望', 'needは「必要だ・なければならない」という必要性', 'wantは感情的、needはより客観的・必須な場面'],
+      examples: ['I want a new phone.（新しいスマホが欲しい）', 'I need water right now.（今すぐ水が必要です）', 'She wants to travel.（彼女は旅行したい）', 'He needs to rest.（彼は休む必要がある）', 'What do you want for dinner?（夕食は何が食べたい？）'] }},
+    { id: 'b13', words: 'need / wish', ca: {
+      points: ['needは実際の必要性・なければ困る状況', 'wishは実現が難しいことへの願望・空想', 'I need time（実際に時間が必要）/ I wish I had time（あったらいいのに）'],
+      examples: ['I need more time.（もっと時間が必要です）', 'I wish I had more time.（時間があればいいのに）', 'She needs help.（彼女は助けが必要だ）', 'She wishes she could fly.（飛べたらいいのにと思う）', 'I wish things were different.（状況が違ったらいいのに）'] }},
+    { id: 'b14', words: 'start / begin', ca: {
+      points: ['startは具体的な行動・機械を起動する場面でよく使う', 'beginはより正式・抽象的な場面でよく使う', '日常会話ではstartが自然、文章・公式場面ではbeginが多い'],
+      examples: ['Start the engine.（エンジンをかけて）', 'The meeting will begin at 9.（会議は9時に始まります）', 'She started running.（彼女は走り始めた）', 'He began to speak.（彼は話し始めた）', 'Let\'s start now!（今始めましょう！）'] }},
+    { id: 'b15', words: 'stop / quit', ca: {
+      points: ['stopは一時的・動作を止める（再開の可能性あり）', 'quitは完全にやめる・辞める（仕事・習慣など）', 'stop talking（話すのをやめて）/ quit smoking（タバコをやめる）'],
+      examples: ['Stop talking, please.（話すのをやめてください）', 'She quit smoking last year.（彼女は去年タバコをやめた）', 'The rain stopped.（雨が止んだ）', 'He quit his job.（彼は仕事を辞めた）', 'Stop here.（ここで止めて）'] }},
+    { id: 'b16', words: 'quit / finish', ca: {
+      points: ['quitは途中でやめる・諦める（未完了）', 'finishは最後まで完了する・終わらせる（完了）', '重要な違い：quitは中断、finishは達成'],
+      examples: ['He quit halfway.（彼は途中でやめた）', 'She finished the project.（彼女はプロジェクトを完了した）', 'Don\'t quit now.（今やめないで）', 'Did you finish eating?（食べ終わりましたか？）', 'I quit the game early.（ゲームを途中でやめた）'] }},
+    { id: 'b17', words: 'bring / take / carry', ca: {
+      points: ['bringは話者のいる方向へ持ってくる', 'takeは話者から離れる方向へ持っていく', 'carryは持ち運ぶ・運搬する（方向を問わず、重さや継続性に焦点）'],
+      examples: ['Bring me the book.（その本を持ってきて）', 'Take this to her.（これを彼女に持っていって）', 'Can you carry this box?（この箱を運んでくれますか？）', 'He brought flowers to the party.（彼はパーティーに花を持ってきた）', 'She carried the luggage upstairs.（彼女は荷物を上の階まで運んだ）'] }},
+    { id: 'b18', words: 'hear / listen', ca: {
+      points: ['hearは自然に音が聞こえる状態（受動的・意図なし）', 'listenは意識的に耳を傾ける（能動的・集中する）', 'I heard a noise（音が聞こえた）/ Listen to me（聞いて）'],
+      examples: ['I heard a noise outside.（外で音が聞こえた）', 'Listen to the teacher.（先生の話を聞いて）', 'Did you hear that?（あれ聞こえた？）', 'She listened carefully.（彼女は注意深く聞いた）', 'I can hear music from next door.（隣から音楽が聞こえる）'] }},
+    { id: 'b19', words: 'see / meet', ca: {
+      points: ['seeは偶然会う・顔を合わせる（casual、日常的）', 'meetは初めて会う・約束して会う（公式的な出会い）', 'Nice to meet you（初めまして）/ I\'ll see you（また会いましょう）'],
+      examples: ['I saw her at the store.（お店で彼女に会った）', 'Nice to meet you.（初めまして）', 'I\'ll see you tomorrow.（また明日）', 'We met at a conference.（私たちは会議で出会った）', 'Can I see you later?（後で会える？）'] }},
   ]},
   { level: 'high', label: '🟡 高校レベル', cls: 'yellow', badge: '🥈', unlockLevel: 'beginner', unlockLabel: '中学レベル全クリアで解放', quests: [
-    { id: 'h1',  words: 'find / discover / notice' },
-    { id: 'h2',  words: 'show / demonstrate / present' },
-    { id: 'h3',  words: 'suggest / propose / recommend' },
-    { id: 'h4',  words: 'increase / grow / rise / raise' },
-    { id: 'h5',  words: 'change / alter / modify' },
-    { id: 'h6',  words: 'affect / influence / impact' },
-    { id: 'h7',  words: 'support / help / assist' },
-    { id: 'h8',  words: 'require / demand / need' },
-    { id: 'h9',  words: 'provide / offer / supply' },
-    { id: 'h10', words: 'allow / permit / enable' },
-    { id: 'h11', words: 'think / believe / suppose' },
-    { id: 'h12', words: 'look / seem / appear' },
-    { id: 'h13', words: 'keep / stay / remain' },
-    { id: 'h14', words: 'use / utilize / employ' },
-    { id: 'h15', words: 'tell / inform / notify' },
+    { id: 'h1',  words: 'find / discover', ca: {
+      points: ['findは意図的または偶然に何かを見つける（日常的）', 'discoverは新しい事実・場所を初めて発見する（重要な発見）', 'I found my keys（鍵を見つけた）/ Scientists discovered a planet（惑星を発見）'],
+      examples: ['I found my keys.（鍵を見つけた）', 'Scientists discovered a new planet.（科学者が新惑星を発見した）', 'She found a great job.（彼女は良い仕事を見つけた）', 'He discovered the truth.（彼は真実を発見した）', 'Did you find what you were looking for?（探していたものは見つかった？）'] }},
+    { id: 'h2',  words: 'discover / notice', ca: {
+      points: ['discoverは重要なものを初めて発見する・明らかにする', 'noticeは変化や細部に気づく・目に留まる（小さな気づき）', 'discoverは大きな発見、noticeは日常的な気づき'],
+      examples: ['He discovered a flaw in the system.（システムの欠陥を発見した）', 'She noticed he was upset.（彼が動揺していることに気づいた）', 'They discovered a cure for the disease.（病気の治療法を発見した）', 'I noticed the difference immediately.（すぐに違いに気づいた）', 'Did you notice the sign?（あの標識に気づいた？）'] }},
+    { id: 'h3',  words: 'show / demonstrate', ca: {
+      points: ['showは「見せる・示す」という広い意味（日常的）', 'demonstrateは「実演・証明する」公式・具体的な場面', 'データや証拠で示すときはdemonstrate、単に見せるときはshow'],
+      examples: ['Show me your photo.（写真を見せて）', 'He demonstrated the technique.（彼は技術を実演した）', 'She showed me the way.（彼女は道を教えてくれた）', 'The data demonstrates the trend.（データがトレンドを示している）', 'Can you show me how it works?（使い方を見せてもらえますか？）'] }},
+    { id: 'h4',  words: 'demonstrate / present', ca: {
+      points: ['demonstrateは実演・証明・具体的に示す（行動で示す）', 'presentは正式に発表する・プレゼンする（聴衆に向けて）', 'demonstrate a product（製品を実演）/ present findings（調査結果を発表）'],
+      examples: ['She demonstrated the product.（彼女は製品を実演した）', 'He presented his findings.（彼は調査結果を発表した）', 'Please demonstrate how it works.（動作を実演してください）', 'She presented the proposal to the board.（彼女は取締役会に提案を発表した）', 'Demonstrate your skills.（あなたのスキルを実証してください）'] }},
+    { id: 'h5',  words: 'suggest / propose', ca: {
+      points: ['suggestは軽い提案・アイデアを出す（informal）', 'proposeはより正式・具体的な提案をする（公式場面）', 'suggest a break（休憩を提案）/ propose a new plan（新計画を提案）'],
+      examples: ['I suggest we take a break.（少し休憩することを提案します）', 'He proposed a new business plan.（彼は新しいビジネス計画を提案した）', 'She suggested a different route.（彼女は別のルートを提案した）', 'They proposed a merger.（彼らは合併を提案した）', 'Can you suggest something to eat?（何か食べるものを提案できますか？）'] }},
+    { id: 'h6',  words: 'propose / recommend', ca: {
+      points: ['proposeは正式に提案・申し出る（新しいアイデアを出す）', 'recommendは経験や知識をもとに勧める・推薦する（既知のものを薦める）', 'propose a solution（解決策を提案）/ recommend a restaurant（レストランを勧める）'],
+      examples: ['He proposed a toast.（彼が乾杯の発声をした）', 'I recommend this restaurant.（このレストランをお勧めします）', 'She proposed a new policy.（彼女は新しい政策を提案した）', 'The doctor recommended rest.（医師は安静を勧めた）', 'What would you recommend?（何がお勧めですか？）'] }},
+    { id: 'h7',  words: 'increase / grow', ca: {
+      points: ['increaseは数・量・割合が増える（数値的・測定可能）', 'growは大きくなる・発展する（有機的・自然な成長）', 'increase by 10%（10%増加）/ the company grew（会社が成長した）'],
+      examples: ['Sales increased by 10%.（売上が10%増加した）', 'The company grew rapidly.（会社は急成長した）', 'Prices are increasing.（物価が上昇している）', 'The city has grown a lot.（この街はとても成長した）', 'Increase the volume.（音量を上げて）'] }},
+    { id: 'h8',  words: 'grow / rise', ca: {
+      points: ['growは成長・拡大（生物・組織・能力など）', 'riseは上昇する・高くなる（位置・数値・温度）', 'grow in size（大きくなる）/ prices rise（物価が上がる）'],
+      examples: ['The economy grew last year.（昨年経済は成長した）', 'Prices rose sharply.（物価が急上昇した）', 'She grew more confident.（彼女はより自信をつけた）', 'The sun rises in the east.（太陽は東から昇る）', 'The business is growing.（ビジネスは成長中だ）'] }},
+    { id: 'h9',  words: 'rise / raise', ca: {
+      points: ['riseは自動詞・自然に上がる（主語自身が動く）', 'raiseは他動詞・何かを引き上げる（目的語が必要）', 'The sun rises（太陽が昇る）/ Raise your hand（手を挙げて）'],
+      examples: ['The temperature rose suddenly.（気温が急に上がった）', 'Raise your hand if you know.（分かる人は手を挙げて）', 'The river rose after the rain.（雨の後、川の水位が上がった）', 'She raised three children.（彼女は3人の子どもを育てた）', 'He raised the flag.（彼は旗を掲げた）'] }},
+    { id: 'h10', words: 'change / alter', ca: {
+      points: ['changeは全体的・根本的に変わる・変える（大きな変化）', 'alterは部分的・細部を調整・修正する（小さな変更）', 'change your mind（気が変わる）/ alter the design slightly（デザインを少し修正）'],
+      examples: ['The weather changed suddenly.（天気が突然変わった）', 'She altered the dress a bit.（彼女はドレスを少し直した）', 'I changed my mind.（気が変わった）', 'He altered the schedule slightly.（彼は予定を少し変更した）', 'Things change over time.（時間とともに物事は変わる）'] }},
+    { id: 'h11', words: 'alter / modify', ca: {
+      points: ['alterは外見・形・計画を部分的に変える', 'modifyはシステム・仕様・設定を調整・改良する（技術的）', 'alter a suit（スーツを直す）/ modify the software（ソフトを修正）'],
+      examples: ['She altered her travel plans.（彼女は旅行計画を変更した）', 'Modify the settings to fit your needs.（設定をニーズに合わせて変更して）', 'The tailor altered the suit.（仕立て屋がスーツを直した）', 'They modified the software.（彼らはソフトウェアを修正した）', 'Can you modify this code?（このコードを修正できますか？）'] }},
+    { id: 'h12', words: 'affect / influence', ca: {
+      points: ['affectは直接的な影響を与える（結果に焦点）', 'influenceは間接的・長期的に影響を与える（過程・方向性に焦点）', 'affect health（健康に影響する）/ influence a decision（決断に影響を与える）'],
+      examples: ['The rain affected the game.（雨が試合に影響した）', 'His teacher influenced him greatly.（彼の先生は彼に大きな影響を与えた）', 'Stress affects your health.（ストレスは健康に影響する）', 'She influenced my decision.（彼女が私の決断に影響を与えた）', 'The news affected everyone.（そのニュースは全員に影響した）'] }},
+    { id: 'h13', words: 'influence / impact', ca: {
+      points: ['influenceは持続的・間接的な影響力（じわじわ）', 'impactは強くて即座の影響・衝撃（ドカンと）', 'influence over time（時間をかけた影響）/ huge impact（大きな衝撃）'],
+      examples: ['He influenced many students.（彼は多くの学生に影響を与えた）', 'The storm had a huge impact.（嵐は甚大な影響を与えた）', 'Her work influenced the field.（彼女の研究はその分野に影響を与えた）', 'The news impacted the market.（そのニュースは市場に影響を与えた）', 'Music can influence your mood.（音楽は気分に影響を与えることがある）'] }},
+    { id: 'h14', words: 'support / help', ca: {
+      points: ['supportは継続的・精神的・組織的なサポート', 'helpは具体的・即座の手助け（一回の行動）', 'support a cause（活動を支援する）/ help someone move（引越しを手伝う）'],
+      examples: ['I support your decision.（あなたの決断を支持します）', 'Can you help me?（手伝ってもらえますか？）', 'The company supports research.（その会社は研究を支援している）', 'She helped him carry the box.（彼女は彼が箱を運ぶのを手伝った）', 'Thank you for your support.（ご支援ありがとうございます）'] }},
+    { id: 'h15', words: 'help / assist', ca: {
+      points: ['helpは日常的・一般的な手伝い（誰でも使える）', 'assistはより専門的・公式的な補助（職場・フォーマル）', 'help a friend（友達を助ける）/ assist the doctor（医師を補助する）'],
+      examples: ['Help me, please.（助けてください）', 'The nurse assisted the doctor.（看護師が医師を補助した）', 'Can I help you?（何かお手伝いできますか？）', 'She assisted in the project.（彼女はプロジェクトを補助した）', 'He helped me move.（彼は引越しを手伝ってくれた）'] }},
+    { id: 'h16', words: 'require / demand', ca: {
+      points: ['requireは必要条件・要件として求める（フォーマル・中立的）', 'demandは強く要求する・権利として主張する（感情的・強い）', 'required documents（必要書類）/ demand a refund（返金を要求）'],
+      examples: ['The job requires experience.（その仕事は経験が必要です）', 'She demanded an explanation.（彼女は説明を要求した）', 'This requires your attention.（これにはご注意が必要です）', 'He demanded a refund.（彼は返金を要求した）', 'It requires patience.（忍耐が必要です）'] }},
+    { id: 'h17', words: 'demand / need', ca: {
+      points: ['demandは強く要求する・権利として主張する（強調・権利）', 'needは必要性・なければ困る状態（客観的な必要性）', 'demand more pay（賃上げを要求）/ need more time（時間が必要）'],
+      examples: ['He demanded more money.（彼はもっとお金を要求した）', 'I need more time.（もっと時間が必要です）', 'The workers demanded rights.（労働者たちは権利を要求した）', 'She needs help.（彼女は助けが必要です）', 'She demanded an apology.（彼女は謝罪を要求した）'] }},
+    { id: 'h18', words: 'provide / offer', ca: {
+      points: ['provideは必要なものを供給する・提供する（義務・役割として）', 'offerは自発的に申し出る・提案する（任意・好意として）', 'provide meals（食事を提供する）/ offer to help（手伝いを申し出る）'],
+      examples: ['The school provides meals.（その学校は食事を提供している）', 'She offered to help.（彼女は手伝いを申し出た）', 'Water is provided here.（ここでは水が提供されます）', 'He offered a solution.（彼は解決策を提案した）', 'Please provide your details.（詳細を教えてください）'] }},
+    { id: 'h19', words: 'offer / supply', ca: {
+      points: ['offerは自発的に提供・申し出る（意思・好意）', 'supplyは継続的に供給する（物・資源・システム）', 'offer a seat（席を譲る）/ supply electricity（電力を供給する）'],
+      examples: ['He offered his seat.（彼は席を譲った）', 'The factory supplies parts.（工場が部品を供給している）', 'She offered advice.（彼女はアドバイスを提供した）', 'We supply water to the area.（私たちはその地域に水を供給しています）', 'What can I offer you?（何をご提供できますか？）'] }},
+    { id: 'h20', words: 'allow / permit / enable', ca: {
+      points: ['allowは許可する・容認する（一般的・日常的）', 'permitはより正式・法的な許可（書面・規則に基づく）', 'enableは技術的・機能的に可能にする（条件を整える）'],
+      examples: ['Allow me to explain.（説明させてください）', 'Photography is not permitted here.（ここでは撮影は許可されていません）', 'This tool enables faster work.（このツールで作業が速くなる）', 'She allowed him to stay.（彼女は彼が滞在することを許した）', 'The update enabled new features.（アップデートで新機能が使えるようになった）'] }},
   ]},
   { level: 'advanced', label: '🔴 発展レベル', cls: 'red', badge: '🥇', unlockLevel: 'high', unlockLabel: '高校レベル全クリアで解放', quests: [
-    { id: 'a1',  words: 'feel / sense / notice' },
-    { id: 'a2',  words: 'worry / concern / bother' },
-    { id: 'a3',  words: 'hope / wish / expect' },
-    { id: 'a4',  words: 'remember / recall / remind' },
-    { id: 'a5',  words: 'forget / leave / miss' },
-    { id: 'a6',  words: 'agree / accept / approve' },
-    { id: 'a7',  words: 'refuse / reject / decline' },
-    { id: 'a8',  words: 'complain / protest / object' },
-    { id: 'a9',  words: 'apologize / excuse / forgive' },
-    { id: 'a10', words: 'succeed / achieve / accomplish' },
+    { id: 'a1',  words: 'feel / sense', ca: {
+      points: ['feelは感情・感覚を直接経験する（主観的・身体的）', 'senseは直感・本能的に感じ取る（察知する・予感）', 'I feel cold（寒い）/ I sense something is wrong（何かがおかしいと感じる）'],
+      examples: ['I feel happy today.（今日は幸せな気持ちです）', 'I sense something is wrong.（何かがおかしいと感じる）', 'She felt the cold wind.（彼女は冷たい風を感じた）', 'He sensed danger nearby.（彼は近くに危険を感じ取った）', 'How do you feel?（気分はどうですか？）'] }},
+    { id: 'a2',  words: 'sense / notice', ca: {
+      points: ['senseは直感や本能で察知する（はっきりしない・漠然とした感じ）', 'noticeは意識的に気づく・目に留まる（具体的な変化や物）', 'sense tension（緊張を察知）/ notice a change（変化に気づく）'],
+      examples: ['I sensed her hesitation.（彼女の躊躇いを感じ取った）', 'I noticed she was quiet.（彼女が静かなことに気づいた）', 'He sensed trouble ahead.（彼は前方にトラブルを予感した）', 'Did you notice the change?（変化に気づきましたか？）', 'She sensed the tension in the room.（彼女は部屋の緊張感を察した）'] }},
+    { id: 'a3',  words: 'worry / concern', ca: {
+      points: ['worryは心配・不安を感じる（感情的・個人的・過剰な場合も）', 'concernは懸念する・関心を持つ（やや客観的・深刻な問題）', 'Don\'t worry（心配しないで）/ This concerns me（これが懸念される）'],
+      examples: ['Don\'t worry about it.（それは心配しないで）', 'His health concerns me.（彼の健康が心配です）', 'She worries too much.（彼女は心配しすぎる）', 'This issue concerns everyone.（この問題は皆に関係する）', 'I\'m worried about the exam.（試験が心配です）'] }},
+    { id: 'a4',  words: 'concern / bother', ca: {
+      points: ['concernは懸念・心配する（深刻・重要なこと）', 'botherは悩ませる・気になる・わずらわしい（些細なことが多い）', 'It concerns me（懸念される）/ It bothers me（気になる・うっとうしい）'],
+      examples: ['This decision concerns me.（この決定が懸念されます）', 'The noise bothers me.（騒音が気になります）', 'Her silence concerned him.（彼女の沈黙が彼を心配させた）', 'Does it bother you?（気になりますか？）', 'It\'s a concern for all of us.（それは私たち全員の懸念事項です）'] }},
+    { id: 'a5',  words: 'hope / wish', ca: {
+      points: ['hopeは実現可能な期待・願い（前向きな期待）', 'wishは実現が難しいことへの願望・空想（現実とのギャップ）', 'I hope it works（うまくいくといい）/ I wish it worked（うまくいけばいいのに）'],
+      examples: ['I hope she gets better soon.（彼女が早く回復するといいな）', 'I wish I could fly.（飛べたらいいのに）', 'We hope to see you soon.（近いうちにお会いできることを願っています）', 'He wishes he were taller.（もっと背が高ければと思っている）', 'I hope it doesn\'t rain.（雨が降らないといいな）'] }},
+    { id: 'a6',  words: 'wish / expect', ca: {
+      points: ['wishは実現が難しいことへの願望・空想', 'expectは根拠のある予測・当然の予期（現実に基づく）', 'I wish I knew（知っていたらいいのに）/ I expect he\'ll come（彼は来ると思う）'],
+      examples: ['I wish I knew the answer.（答えを知っていたらいいのに）', 'I expect it will rain later.（後で雨が降ると思います）', 'She wishes she could go.（彼女は行けたらいいのにと思っている）', 'He expects a reply by noon.（彼は正午までに返信があると思っている）', 'What do you expect?（どう思いますか？）'] }},
+    { id: 'a7',  words: 'remember / recall', ca: {
+      points: ['rememberは記憶として保持している状態・思い出す（自然に）', 'recallは意識的に記憶を引き出す・思い出そうとする（努力して）', 'I remember her face（顔を覚えている）/ I can\'t recall her name（名前を思い出せない）'],
+      examples: ['I remember your name.（あなたの名前を覚えています）', 'Can you recall what happened?（何が起きたか思い出せますか？）', 'She remembered the meeting.（彼女は会議のことを覚えていた）', 'He recalled the details.（彼は詳細を思い出した）', 'Do you remember me?（私のことを覚えていますか？）'] }},
+    { id: 'a8',  words: 'recall / remind', ca: {
+      points: ['recallは自分が記憶を思い出す（主語が自分）', 'remindは他の人に思い出させる・気づかせる（主語が他者や物）', 'I can\'t recall（思い出せない）/ Remind me（思い出させて）'],
+      examples: ['I can\'t recall her name.（彼女の名前が思い出せない）', 'Remind me to call her later.（後で彼女に電話するよう思い出させて）', 'He recalled the incident.（彼はその出来事を思い出した）', 'She reminded him of the meeting.（彼女は彼に会議を思い出させた）', 'This song reminds me of summer.（この曲を聞くと夏を思い出す）'] }},
+    { id: 'a9',  words: 'forget / leave', ca: {
+      points: ['forgetは記憶・約束などを忘れる（頭の中の記憶）', 'leaveは物を置いてきてしまう・忘れてくる（物理的な置き忘れ）', 'I forgot your birthday（誕生日を忘れた）/ I left my phone（スマホを置いてきた）'],
+      examples: ['I forgot your birthday.（あなたの誕生日を忘れていた）', 'I left my phone at home.（スマホを家に忘れてきた）', 'She forgot the password.（彼女はパスワードを忘れた）', 'He left his bag on the train.（彼はバッグを電車に忘れた）', 'Don\'t forget to call me.（電話することを忘れないで）'] }},
+    { id: 'a10', words: 'leave / miss', ca: {
+      points: ['leaveは場所・人・物を残して去る（物理的な離脱）', 'missは人や物事がなくて寂しい・機会を逃す（感情・損失）', 'leave home（家を出る）/ miss the bus（バスに乗り遅れる）/ miss you（寂しい）'],
+      examples: ['She left the room quietly.（彼女は静かに部屋を出た）', 'I miss my family.（家族が恋しいです）', 'He left his job last week.（彼は先週仕事を辞めた）', 'I missed the bus.（バスに乗り遅れた）', 'Don\'t miss this chance.（このチャンスを逃さないで）'] }},
+    { id: 'a11', words: 'agree / accept', ca: {
+      points: ['agreeは意見・提案に同意する（内容に賛成）', 'acceptは申し出・現実・状況を受け入れる（条件や事実を認める）', 'agree with you（あなたに同意）/ accept the offer（申し出を受け入れる）'],
+      examples: ['I agree with you.（あなたに同意します）', 'She accepted the job offer.（彼女は内定を受け入れた）', 'We agreed on the plan.（私たちは計画に同意した）', 'He accepted the challenge.（彼は挑戦を受け入れた）', 'Do you agree?（同意しますか？）'] }},
+    { id: 'a12', words: 'accept / approve', ca: {
+      points: ['acceptは提供されたものを受け入れる（受動的な受領）', 'approveは正式に承認・賛成する（権限を持つ立場が判断）', 'accept an apology（謝罪を受け入れる）/ approve a budget（予算を承認）'],
+      examples: ['She accepted the gift.（彼女はプレゼントを受け取った）', 'The manager approved the budget.（マネージャーが予算を承認した）', 'I accept your apology.（あなたの謝罪を受け入れます）', 'The board approved the plan.（取締役会が計画を承認した）', 'Accept the terms and conditions.（利用規約に同意してください）'] }},
+    { id: 'a13', words: 'refuse / reject', ca: {
+      points: ['refuseは申し出・依頼を断る（一般的・日常的）', 'rejectは明確に拒否・却下する（より強い・公式な場面）', 'refuse to go（行くのを断る）/ application was rejected（申請が却下された）'],
+      examples: ['She refused to answer.（彼女は答えることを拒否した）', 'His application was rejected.（彼の申請は却下された）', 'He refused the offer.（彼はオファーを断った）', 'The idea was rejected by the team.（アイデアはチームに却下された）', 'I refuse to give up.（諦めることを拒否する）'] }},
+    { id: 'a14', words: 'reject / decline', ca: {
+      points: ['rejectは強く・明確に拒否・却下する（公式・強い）', 'declineは丁寧に断る・辞退する（フォーマル・礼儀正しい）', 'reject a proposal（提案を却下）/ decline an invitation（招待を丁寧に断る）'],
+      examples: ['The plan was rejected.（計画は却下された）', 'She declined the invitation politely.（彼女は丁寧に招待を断った）', 'He rejected all offers.（彼はすべての申し出を拒否した）', 'He politely declined.（彼は丁寧に辞退した）', 'I must decline your offer.（あなたの申し出を辞退しなければなりません）'] }},
+    { id: 'a15', words: 'complain / protest', ca: {
+      points: ['complainは不満を言う・クレームを言う（個人的・日常的）', 'protestは公に抗議する・反対意見を表明する（集団的・社会的）', 'complain about noise（騒音について文句を言う）/ protest against a law（法律に抗議）'],
+      examples: ['She complained about the noise.（彼女は騒音について文句を言った）', 'They protested against the new law.（彼らは新しい法律に抗議した）', 'He always complains.（彼はいつも文句を言う）', 'Students protested peacefully.（学生たちは平和的に抗議した）', 'Don\'t complain so much.（そんなに文句を言わないで）'] }},
+    { id: 'a16', words: 'protest / object', ca: {
+      points: ['protestは公に反対する・抗議活動をする（行動を伴うことが多い）', 'objectは（意見として）反対する・異議を唱える（言葉・意見で）', 'protest in the streets（街頭で抗議）/ object to a plan（計画に異議）'],
+      examples: ['They protested the decision.（彼らはその決定に抗議した）', 'I object to this plan.（この計画に反対します）', 'She protested loudly.（彼女は大声で抗議した）', 'He objected to the change.（彼は変更に異議を唱えた）', 'People protested outside the building.（人々がビルの外で抗議した）'] }},
+    { id: 'a17', words: 'apologize / excuse', ca: {
+      points: ['apologizeは謝罪する・申し訳ないと思う（誠意を込めた謝罪）', 'excuseは軽いミスを許してもらう・言い訳をする（軽いもの）', 'I apologize for the mistake（誤りをお詫びします）/ Excuse me（すみません）'],
+      examples: ['I apologize for being late.（遅刻をお詫びします）', 'Excuse me for interrupting.（割り込んで申し訳ありません）', 'She apologized sincerely.（彼女は誠実に謝罪した）', 'He excused his behavior.（彼は自分の行動を言い訳した）', 'Please accept my apology.（お詫び申し上げます）'] }},
+    { id: 'a18', words: 'excuse / forgive', ca: {
+      points: ['excuseは軽いミス・不都合を許す・言い訳を認める', 'forgiveはより深い傷・過ちを心から許す（感情的な許し）', 'Excuse the mess（散らかっていてすみません）/ Forgive me（許してください）'],
+      examples: ['Excuse my lateness.（遅れたことをお許しください）', 'Please forgive me for what I did.（私がしたことを許してください）', 'She excused his behavior.（彼女は彼の行動を大目に見た）', 'Can you forgive him?（彼を許せますか？）', 'I forgave her for what she did.（彼女がしたことを許した）'] }},
+    { id: 'a19', words: 'succeed / achieve', ca: {
+      points: ['succeedは目標を達成する・成功する（結果・状態）', 'achieveは努力によって目標・成果を実現する（過程と結果）', 'succeed in the exam（試験に合格）/ achieve a dream（夢を達成）'],
+      examples: ['She succeeded in the exam.（彼女は試験に合格した）', 'He achieved his dream.（彼は夢を達成した）', 'Did you succeed?（成功しましたか？）', 'She achieved great results.（彼女は素晴らしい結果を出した）', 'We will succeed together.（私たちは一緒に成功する）'] }},
+    { id: 'a20', words: 'achieve / accomplish', ca: {
+      points: ['achieveは目標・夢を達成する（大きな成果・長期的）', 'accomplishはタスク・任務を完了する（具体的な達成・短期的）', 'achieve success（成功を収める）/ accomplish the mission（任務を完了）'],
+      examples: ['She achieved her goal.（彼女は目標を達成した）', 'He accomplished the mission.（彼は任務を遂行した）', 'He achieved great success.（彼は大きな成功を収めた）', 'We accomplished a lot today.（今日は多くのことを成し遂げた）', 'What did you achieve?（何を達成しましたか？）'] }},
   ]},
 ];
 
@@ -585,6 +747,7 @@ let chatLog = [];
 let isLoading = false;
 let activeQuestId = null;
 let questSteps = { s1: false, s2: false, s3: false };
+let questAnswers = null;
 
 // ════════════════════════════════════════════════════════════
 // INIT
@@ -598,6 +761,10 @@ window.onload = () => {
   }
   initTts();
   checkForSavedSessions();
+  fetch('quest-answers.json')
+    .then(r => r.json())
+    .then(data => { questAnswers = data; })
+    .catch(() => { questAnswers = null; });
 };
 
 // ════════════════════════════════════════════════════════════
@@ -652,6 +819,53 @@ function openQuestModal() {
 }
 function closeQuestModal() {
   document.getElementById('questModal').classList.remove('open');
+}
+
+function getAnswerFromJson(questId) {
+  if (!questAnswers) return null;
+  const sectionMap = { b: 'junior', h: 'high', a: 'advanced' };
+  const section = sectionMap[questId[0]];
+  if (!section) return null;
+  const num = parseInt(questId.slice(1), 10);
+  const entry = questAnswers[section].find(q => q.id === num);
+  return entry ? entry.correctAnswer : null;
+}
+
+function showCorrectAnswerModal() {
+  const allQuests = QUEST_DATA.flatMap(g => g.quests);
+  const quest = allQuests.find(q => q.id === activeQuestId);
+  if (!quest) return;
+
+  document.getElementById('caModalTitle').textContent = '📖 正解例：' + quest.words;
+
+  const body = document.getElementById('caModalBody');
+  const ca = getAnswerFromJson(activeQuestId);
+
+  if (!ca) {
+    body.innerHTML = '<div style="color:var(--text-muted);font-size:0.88rem;padding:8px 0">正解例が見つかりません</div>';
+    document.getElementById('correctAnswerModal').classList.add('open');
+    return;
+  }
+
+  let html = '<div class="ca-section-title">ポイント</div>';
+  ca.point.split('\n').forEach(p => {
+    if (p.trim()) html += `<div class="ca-point">${p.trim()}</div>`;
+  });
+  html += '<div class="ca-section-title">実例</div>';
+  ca.examples.forEach(ex => {
+    const m = ex.match(/^(.+?)（(.+?)）$/);
+    if (m) {
+      html += `<div class="ca-example"><span class="ca-example-en">${m[1].trim()}</span><br><span class="ca-example-ja">（${m[2]}）</span></div>`;
+    } else {
+      html += `<div class="ca-example">${ex}</div>`;
+    }
+  });
+  body.innerHTML = html;
+  document.getElementById('correctAnswerModal').classList.add('open');
+}
+
+function closeCorrectAnswerModal() {
+  document.getElementById('correctAnswerModal').classList.remove('open');
 }
 
 function getQuestStatuses() {
