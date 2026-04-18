@@ -6,377 +6,153 @@
 <title>Emma's English Lab</title>
 <style>
   :root {
-    --bg: #f8f7f4;
-    --surface: #ffffff;
-    --surface2: #f2f0eb;
-    --border: #e2dfd8;
-    --primary: #6b8f71;
-    --primary-light: #e8f0e9;
-    --primary-dark: #4a6b50;
-    --accent: #c9956e;
-    --text: #2d2d2d;
-    --text-muted: #7a7672;
-    --emma-bg: #eef4ef;
-    --user-bg: #fff8f4;
-    --shadow: 0 2px 12px rgba(0,0,0,0.07);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
-    --radius: 16px;
+    --bg: #f8f7f4; --surface: #ffffff; --surface2: #f2f0eb;
+    --border: #e2dfd8; --primary: #6b8f71; --primary-light: #e8f0e9;
+    --primary-dark: #4a6b50; --accent: #c9956e; --text: #2d2d2d;
+    --text-muted: #7a7672; --emma-bg: #eef4ef; --user-bg: #fff8f4;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07); --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+    --lv-green: #6b8f71; --lv-yellow: #c9956e; --lv-red: #b85c5c;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+  body { font-family: 'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
   /* ── Header ── */
-  .header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-    box-shadow: var(--shadow);
-    z-index: 10;
-  }
-  .logo {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--primary-dark);
-    white-space: nowrap;
-    flex: 1;
-  }
+  .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; box-shadow: var(--shadow); z-index: 10; }
+  .logo { font-size: 1.15rem; font-weight: 700; color: var(--primary-dark); white-space: nowrap; flex: 1; }
   .logo span { color: var(--accent); }
-
-  .header-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-  }
-  .status-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: #ccc;
-    flex-shrink: 0;
-    transition: background 0.3s;
-  }
+  .header-status { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted); }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; transition: background 0.3s; }
   .status-dot.ok { background: var(--primary); }
   .status-dot.error { background: #e57373; }
-
-
-  .settings-btn {
-    width: 56px; height: 56px;
-    border-radius: 10px;
-    border: 1.5px solid var(--border);
-    background: var(--surface2);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-  .settings-btn:hover { border-color: var(--primary); background: var(--primary-light); }
-  .settings-btn.active { border-color: var(--primary); background: var(--primary-light); }
+  .icon-btn { width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: all 0.2s; flex-shrink: 0; }
+  .icon-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+  .icon-btn.active { border-color: var(--primary); background: var(--primary-light); }
 
   /* ── Main layout ── */
-  .main {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-  }
+  .main { display: flex; flex: 1; overflow: hidden; position: relative; }
 
   /* ── Sidebar ── */
-  .sidebar {
-    width: 200px;
-    flex-shrink: 0;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    padding: 24px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .sidebar-title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .step-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px;
-    border-radius: 10px;
-    transition: background 0.2s;
-  }
+  .sidebar { width: 210px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 20px 14px; display: flex; flex-direction: column; gap: 7px; overflow-y: auto; }
+  .sidebar-title { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .step-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px; border-radius: 10px; transition: background 0.2s; }
   .step-item.active { background: var(--primary-light); }
   .step-item.done .step-num { background: var(--primary); color: #fff; border-color: var(--primary); }
-  .step-num {
-    width: 24px; height: 24px;
-    border-radius: 50%;
-    background: var(--surface2);
-    border: 1.5px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    flex-shrink: 0;
-    transition: all 0.3s;
-  }
-  .step-item.active .step-num {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
-    box-shadow: 0 0 0 3px var(--primary-light);
-  }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--surface2); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); flex-shrink: 0; transition: all 0.3s; }
+  .step-item.active .step-num { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 0 0 3px var(--primary-light); }
   .step-label { font-size: 0.82rem; line-height: 1.4; color: var(--text); }
   .step-item.active .step-label { font-weight: 600; color: var(--primary-dark); }
   .step-item.done .step-label { color: var(--text-muted); }
-  .step-connector { width: 1.5px; height: 12px; background: var(--border); margin-left: 28px; }
+  .step-connector { width: 1.5px; height: 10px; background: var(--border); margin-left: 28px; }
   .step-connector.done-line { background: var(--primary); }
-  .sidebar-footer { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); }
-  .restart-btn {
-    width: 100%;
-    padding: 8px;
-    background: none;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
+
+  /* ── Quest progress in sidebar ── */
+  .quest-progress-box { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 12px; padding: 12px; margin-top: 4px; display: none; flex-direction: column; gap: 8px; }
+  .quest-progress-box.visible { display: flex; }
+  .qp-title { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  .qp-words { font-size: 0.82rem; font-weight: 700; color: var(--primary-dark); }
+  .qp-dots { display: flex; gap: 6px; align-items: center; }
+  .qp-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--border); border: 2px solid var(--border); transition: all 0.3s; flex-shrink: 0; }
+  .qp-dot.done { background: var(--primary); border-color: var(--primary); }
+  .qp-dot.active { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
+  .qp-step-labels { display: flex; gap: 6px; }
+  .qp-step-label { font-size: 0.65rem; color: var(--text-muted); flex: 1; text-align: center; }
+  .qp-step-label.done { color: var(--primary-dark); font-weight: 600; }
+  .clear-btn { width: 100%; padding: 9px; background: var(--accent); color: #fff; border: none; border-radius: 9px; font-size: 0.85rem; font-family: inherit; font-weight: 700; cursor: pointer; transition: all 0.2s; display: none; }
+  .clear-btn.visible { display: block; }
+  .clear-btn:hover { opacity: 0.88; transform: scale(1.02); }
+
+  /* ── Sidebar footer ── */
+  .sidebar-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
+  .save-session-btn { width: 100%; padding: 8px; background: var(--primary); border: none; border-radius: 8px; font-size: 0.8rem; font-family: inherit; font-weight: 600; color: #fff; cursor: pointer; transition: background 0.2s; }
+  .save-session-btn:hover { background: var(--primary-dark); }
+  .save-session-btn:disabled { background: #bbb; cursor: not-allowed; }
+  .history-btn { width: 100%; padding: 8px; background: none; border: 1.5px solid var(--primary); border-radius: 8px; font-size: 0.8rem; font-family: inherit; font-weight: 600; color: var(--primary-dark); cursor: pointer; transition: all 0.2s; }
+  .history-btn:hover { background: var(--primary-light); }
+  .restart-btn { width: 100%; padding: 8px; background: none; border: 1.5px solid var(--border); border-radius: 8px; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
   .restart-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   /* ── Chat area ── */
-  .chat-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 24px 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    scroll-behavior: smooth;
-  }
+  .chat-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
   .chat-messages::-webkit-scrollbar { width: 4px; }
   .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-  /* ── Message bubbles ── */
-  .msg {
-    display: flex;
-    gap: 10px;
-    max-width: 85%;
-    animation: fadeIn 0.3s ease;
-  }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  /* ── Bubbles ── */
+  .msg { display: flex; gap: 10px; max-width: 85%; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
   .msg.emma { align-self: flex-start; }
   .msg.user { align-self: flex-end; flex-direction: row-reverse; }
-  .avatar {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-    flex-shrink: 0;
-    box-shadow: var(--shadow);
-  }
-  .avatar.emma-av { background: var(--primary); overflow: hidden; padding: 0; }
-  .avatar.emma-av img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 50%; display: block; }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; box-shadow: var(--shadow); }
+  .avatar.emma-av { background: transparent; overflow: visible; padding: 0; width: 80px; height: 100px; border-radius: 0; box-shadow: none; flex-direction: column; align-items: center; gap: 4px; }
+  .expr-img { width: 80px; height: 92px; object-fit: cover; object-position: top; border-radius: 12px; display: block; box-shadow: var(--shadow); }
+  .expr-fallback { width: 80px; height: 92px; display: none; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 700; background: var(--primary); color: #fff; border-radius: 12px; box-shadow: var(--shadow); }
   .avatar.user-av { background: var(--accent); }
-  .bubble {
-    padding: 12px 16px;
-    border-radius: 18px;
-    line-height: 1.65;
-    font-size: 0.9rem;
-    box-shadow: var(--shadow);
-  }
-  .emma .bubble { background: var(--emma-bg); border-bottom-left-radius: 4px; color: var(--text); }
-  .user .bubble { background: var(--user-bg); border-bottom-right-radius: 4px; color: var(--text); border: 1px solid var(--border); }
+  .bubble { padding: 12px 16px; border-radius: 18px; line-height: 1.65; font-size: 0.9rem; box-shadow: var(--shadow); }
+  .emma .bubble { background: var(--emma-bg); border-bottom-left-radius: 4px; }
+  .user .bubble { background: var(--user-bg); border-bottom-right-radius: 4px; border: 1px solid var(--border); }
   .bubble strong { color: var(--primary-dark); }
   .bubble b { color: var(--primary-dark); font-weight: 700; }
-  .bubble .ja { color: var(--text-muted); font-size: 0.82rem; margin-top: 2px; }
-  .bubble hr { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
-  .bubble .word-header {
-    font-weight: 700; color: var(--primary-dark); font-size: 0.95rem;
-    margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1.5px solid var(--primary-light);
-  }
+  .bubble .word-header { font-weight: 700; color: var(--primary-dark); font-size: 0.95rem; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1.5px solid var(--primary-light); }
   .bubble ol { padding-left: 18px; }
   .bubble ol li { margin-bottom: 6px; }
-
-  .typing-indicator {
-    display: flex; gap: 4px; padding: 12px 16px;
-    background: var(--emma-bg); border-radius: 18px; border-bottom-left-radius: 4px;
-    width: fit-content; box-shadow: var(--shadow);
-  }
+  .typing-indicator { display: flex; gap: 4px; padding: 12px 16px; background: var(--emma-bg); border-radius: 18px; border-bottom-left-radius: 4px; width: fit-content; box-shadow: var(--shadow); }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); animation: bounce 1.2s infinite; }
   .dot:nth-child(2) { animation-delay: 0.2s; }
   .dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bounce {
-    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-    40% { transform: translateY(-6px); opacity: 1; }
-  }
+  @keyframes bounce { 0%,80%,100% { transform:translateY(0); opacity:0.4; } 40% { transform:translateY(-6px); opacity:1; } }
 
   /* ── Input panels ── */
   .input-panel { background: var(--surface); border-top: 1px solid var(--border); padding: 16px 24px; flex-shrink: 0; }
   .step1-panel { display: flex; flex-direction: column; gap: 12px; }
   .field-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+  .preset-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .preset-btn { padding: 4px 10px; font-size: 0.78rem; font-family: inherit; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 20px; color: var(--text-muted); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .preset-btn:hover { border-color: var(--primary); color: var(--primary-dark); background: var(--primary-light); }
   .field-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 160px; }
   .field-group label { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); }
-  .field-group input, .field-group select {
-    padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 10px;
-    font-size: 0.88rem; font-family: inherit; background: var(--surface2); color: var(--text); outline: none; transition: border-color 0.2s;
-  }
-  .field-group input:focus, .field-group select:focus { border-color: var(--primary); }
-  .checkbox-group {
-    display: flex; align-items: center; gap: 8px; padding: 9px 12px;
-    background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px;
-    cursor: pointer; user-select: none; transition: border-color 0.2s;
-  }
+  .field-group input { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.88rem; font-family: inherit; background: var(--surface2); color: var(--text); outline: none; transition: border-color 0.2s; }
+  .field-group input:focus { border-color: var(--primary); }
+  .checkbox-group { display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer; user-select: none; transition: border-color 0.2s; }
   .checkbox-group:hover { border-color: var(--primary); }
   .checkbox-group input[type="checkbox"] { accent-color: var(--primary); width: 15px; height: 15px; cursor: pointer; }
-  .checkbox-group span { font-size: 0.85rem; color: var(--text); }
-  .generate-btn {
-    padding: 10px 28px; background: var(--primary); color: #fff; border: none; border-radius: 10px;
-    font-size: 0.9rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap;
-  }
+  .checkbox-group span { font-size: 0.85rem; }
+  .generate-btn { padding: 10px 28px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 0.9rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; }
   .generate-btn:hover { background: var(--primary-dark); }
   .generate-btn:active { transform: scale(0.97); }
   .generate-btn:disabled { background: #bbb; cursor: not-allowed; }
   .chat-input-row { display: flex; gap: 10px; align-items: flex-end; }
-  .chat-input-row textarea {
-    flex: 1; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 12px;
-    font-size: 0.9rem; font-family: inherit; resize: none; background: var(--surface2); color: var(--text);
-    outline: none; min-height: 44px; max-height: 120px; transition: border-color 0.2s; line-height: 1.5;
-  }
+  .chat-input-row textarea { flex: 1; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 0.9rem; font-family: inherit; resize: none; background: var(--surface2); color: var(--text); outline: none; min-height: 44px; max-height: 120px; transition: border-color 0.2s; line-height: 1.5; }
   .chat-input-row textarea:focus { border-color: var(--primary); }
-  .send-btn {
-    padding: 11px 18px; background: var(--primary); color: #fff; border: none; border-radius: 12px;
-    font-size: 0.9rem; cursor: pointer; transition: background 0.2s; flex-shrink: 0;
-  }
+  .send-btn { padding: 11px 18px; background: var(--primary); color: #fff; border: none; border-radius: 12px; font-size: 0.9rem; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
   .send-btn:hover { background: var(--primary-dark); }
   .send-btn:disabled { background: #bbb; cursor: not-allowed; }
   .input-hint { font-size: 0.76rem; color: var(--text-muted); margin-bottom: 6px; }
   .step-action-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
-  .next-btn {
-    padding: 8px 20px; background: none; border: 1.5px solid var(--primary); color: var(--primary-dark);
-    border-radius: 10px; font-size: 0.82rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: all 0.2s;
-  }
+  .next-btn { padding: 8px 20px; background: none; border: 1.5px solid var(--primary); color: var(--primary-dark); border-radius: 10px; font-size: 0.82rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .next-btn:hover { background: var(--primary-light); }
 
   /* ── Settings Drawer ── */
-  .settings-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.25);
-    z-index: 100;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s;
-  }
+  .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.25); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .settings-overlay.open { opacity: 1; pointer-events: all; }
-
-  .settings-drawer {
-    position: fixed;
-    top: 0; right: 0;
-    width: 320px;
-    height: 100vh;
-    background: var(--surface);
-    box-shadow: var(--shadow-lg);
-    z-index: 101;
-    display: flex;
-    flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: auto;
-  }
+  .settings-drawer { position: fixed; top: 0; right: 0; width: 320px; height: 100vh; background: var(--surface); box-shadow: var(--shadow-lg); z-index: 101; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; }
   .settings-drawer.open { transform: translateX(0); }
-
-  .drawer-header {
-    padding: 20px 20px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
+  .drawer-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .drawer-title { font-size: 1rem; font-weight: 700; color: var(--primary-dark); }
-  .drawer-close {
-    width: 30px; height: 30px;
-    border-radius: 8px; border: none; background: var(--surface2);
-    cursor: pointer; font-size: 1rem; color: var(--text-muted);
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s;
-  }
+  .drawer-close { width: 30px; height: 30px; border-radius: 8px; border: none; background: var(--surface2); cursor: pointer; font-size: 1rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
   .drawer-close:hover { background: var(--border); }
-
   .drawer-body { padding: 20px; display: flex; flex-direction: column; gap: 24px; }
-
   .drawer-section { display: flex; flex-direction: column; gap: 10px; }
-  .drawer-section-title {
-    font-size: 0.72rem; font-weight: 700; color: var(--text-muted);
-    letter-spacing: 0.08em; text-transform: uppercase;
-  }
-
+  .drawer-section-title { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
   .drawer-input-row { display: flex; gap: 8px; }
-  .drawer-input {
-    flex: 1; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 10px;
-    font-size: 0.85rem; font-family: inherit; background: var(--surface2); color: var(--text);
-    outline: none; transition: border-color 0.2s;
-  }
+  .drawer-input { flex: 1; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.85rem; font-family: inherit; background: var(--surface2); color: var(--text); outline: none; transition: border-color 0.2s; }
   .drawer-input:focus { border-color: var(--primary); }
-  .drawer-save-btn {
-    padding: 9px 16px; background: var(--primary); color: #fff; border: none; border-radius: 10px;
-    font-size: 0.82rem; font-family: inherit; font-weight: 600; cursor: pointer; white-space: nowrap;
-    transition: background 0.2s;
-  }
+  .drawer-save-btn { padding: 9px 16px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 0.82rem; font-family: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
   .drawer-save-btn:hover { background: var(--primary-dark); }
-
   .api-key-note { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
   .api-key-note a { color: var(--primary-dark); }
-
-
-  .console-link {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    color: var(--primary-dark);
-    text-decoration: none;
-    padding: 7px 10px;
-    border-radius: 8px;
-    border: 1px solid var(--primary);
-    background: var(--surface);
-    transition: background 0.2s;
-    justify-content: center;
-  }
+  .console-link { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--primary-dark); text-decoration: none; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--primary); background: var(--surface); transition: background 0.2s; justify-content: center; }
   .console-link:hover { background: var(--primary-light); }
-
-  .connection-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    font-size: 0.82rem;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-  }
+  .connection-status { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; font-size: 0.82rem; background: var(--surface2); border: 1px solid var(--border); }
   .connection-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; animation: none; }
   .connection-status.ok .dot { background: var(--primary); }
   .connection-status.error .dot { background: #e57373; }
@@ -384,108 +160,114 @@
   .connection-status.ok .msg-text { color: var(--primary-dark); }
   .connection-status.error .msg-text { color: #b85c5c; }
 
-  /* ── Session buttons ── */
-  .sidebar-footer { display: flex; flex-direction: column; gap: 6px; }
-  .save-session-btn {
-    width: 100%; padding: 8px; background: var(--primary); border: none;
-    border-radius: 8px; font-size: 0.8rem; font-family: inherit; font-weight: 600;
-    color: #fff; cursor: pointer; transition: background 0.2s;
-  }
-  .save-session-btn:hover { background: var(--primary-dark); }
-  .save-session-btn:disabled { background: #bbb; cursor: not-allowed; }
-  .history-btn {
-    width: 100%; padding: 8px; background: none; border: 1.5px solid var(--primary);
-    border-radius: 8px; font-size: 0.8rem; font-family: inherit; font-weight: 600;
-    color: var(--primary-dark); cursor: pointer; transition: all 0.2s;
-  }
-  .history-btn:hover { background: var(--primary-light); }
-
-  /* ── Modal base ── */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.4);
-    z-index: 200; display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.2s;
-  }
+  /* ── Quest Modal ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
   .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal-box {
-    background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-lg);
-    width: 440px; max-width: 95vw; max-height: 85vh;
-    display: flex; flex-direction: column; overflow: hidden;
-    transform: translateY(10px); transition: transform 0.2s;
-  }
+  .modal-box { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-lg); width: 480px; max-width: 95vw; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; transform: translateY(10px); transition: transform 0.2s; }
   .modal-overlay.open .modal-box { transform: translateY(0); }
-  .modal-header {
-    padding: 20px 20px 14px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
-  }
+  .modal-header { padding: 20px 20px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .modal-title { font-size: 1rem; font-weight: 700; color: var(--primary-dark); }
-  .modal-close {
-    width: 30px; height: 30px; border-radius: 8px; border: none;
-    background: var(--surface2); cursor: pointer; font-size: 1rem;
-    color: var(--text-muted); display: flex; align-items: center; justify-content: center;
-  }
+  .modal-close { width: 30px; height: 30px; border-radius: 8px; border: none; background: var(--surface2); cursor: pointer; font-size: 1rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; }
   .modal-close:hover { background: var(--border); }
-  .modal-body { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .modal-body { padding: 16px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
 
-  /* ── Resume modal ── */
-  .resume-card {
-    background: var(--primary-light); border: 1.5px solid var(--primary);
-    border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 6px;
-  }
+  /* ── Quest list items ── */
+  .quest-level-section { display: flex; flex-direction: column; gap: 6px; }
+  .quest-level-header { display: flex; align-items: center; gap: 8px; padding: 6px 0 4px; border-bottom: 1.5px solid var(--border); }
+  .quest-level-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .quest-level-header.green .quest-level-label { color: var(--lv-green); }
+  .quest-level-header.yellow .quest-level-label { color: var(--lv-yellow); }
+  .quest-level-header.red .quest-level-label { color: var(--lv-red); }
+  .quest-level-lock { font-size: 0.72rem; color: var(--text-muted); margin-left: auto; }
+  .quest-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface2); cursor: pointer; transition: all 0.15s; user-select: none; }
+  .quest-item:hover:not(.locked) { border-color: var(--primary); background: var(--primary-light); }
+  .quest-item.locked { opacity: 0.45; cursor: default; }
+  .quest-item.active-quest { border-color: var(--primary); background: var(--primary-light); }
+  .quest-icon { font-size: 1rem; flex-shrink: 0; width: 20px; text-align: center; }
+  .quest-words-text { font-size: 0.85rem; font-weight: 600; color: var(--text); flex: 1; }
+  .quest-item.locked .quest-words-text { color: var(--text-muted); }
+
+  /* ── Session modals ── */
+  .resume-card { background: var(--primary-light); border: 1.5px solid var(--primary); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
   .resume-words { font-size: 1rem; font-weight: 700; color: var(--primary-dark); }
   .resume-meta { font-size: 0.78rem; color: var(--text-muted); }
   .resume-btn-row { display: flex; gap: 10px; margin-top: 4px; }
-  .resume-btn {
-    flex: 1; padding: 10px; background: var(--primary); color: #fff; border: none;
-    border-radius: 10px; font-size: 0.88rem; font-family: inherit; font-weight: 600;
-    cursor: pointer; transition: background 0.2s;
-  }
+  .resume-btn { flex: 1; padding: 10px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 0.88rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: background 0.2s; }
   .resume-btn:hover { background: var(--primary-dark); }
-  .resume-new-btn {
-    flex: 1; padding: 10px; background: none; border: 1.5px solid var(--border);
-    border-radius: 10px; font-size: 0.88rem; font-family: inherit; font-weight: 600;
-    color: var(--text-muted); cursor: pointer; transition: all 0.2s;
-  }
+  .resume-new-btn { flex: 1; padding: 10px; background: none; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.88rem; font-family: inherit; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
   .resume-new-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .resume-hist-link {
-    text-align: center; font-size: 0.78rem; color: var(--primary-dark);
-    cursor: pointer; text-decoration: underline; margin-top: 2px;
-  }
-
-  /* ── History list ── */
-  .session-item {
-    background: var(--surface2); border: 1.5px solid var(--border);
-    border-radius: 12px; padding: 14px 14px 12px;
-    display: flex; flex-direction: column; gap: 6px; transition: border-color 0.2s;
-  }
+  .resume-hist-link { text-align: center; font-size: 0.78rem; color: var(--primary-dark); cursor: pointer; text-decoration: underline; margin-top: 2px; }
+  .session-item { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 14px 12px; display: flex; flex-direction: column; gap: 6px; transition: border-color 0.2s; }
   .session-item:hover { border-color: var(--primary); }
   .session-words { font-size: 0.9rem; font-weight: 700; color: var(--text); }
   .session-meta { font-size: 0.75rem; color: var(--text-muted); }
-  .session-btn-row { display: flex; gap: 8px; margin-top: 2px; }
-  .session-resume-btn {
-    padding: 6px 16px; background: var(--primary); color: #fff; border: none;
-    border-radius: 8px; font-size: 0.8rem; font-family: inherit; font-weight: 600;
-    cursor: pointer; transition: background 0.2s;
-  }
+  .session-btn-row { display: flex; gap: 8px; margin-top: 2px; flex-wrap: wrap; }
+  .session-resume-btn { padding: 6px 14px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-size: 0.8rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: background 0.2s; }
   .session-resume-btn:hover { background: var(--primary-dark); }
-  .session-del-btn {
-    padding: 6px 12px; background: none; border: 1px solid var(--border);
-    border-radius: 8px; font-size: 0.8rem; font-family: inherit;
-    color: var(--text-muted); cursor: pointer; transition: all 0.2s;
-  }
+  .session-del-btn { padding: 6px 12px; background: none; border: 1px solid var(--border); border-radius: 8px; font-size: 0.8rem; font-family: inherit; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
   .session-del-btn:hover { border-color: #e57373; color: #e57373; }
   .history-empty { text-align: center; color: var(--text-muted); font-size: 0.88rem; padding: 20px 0; }
 
+  /* ── Badge celebration ── */
+  .badge-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 300; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .badge-overlay.open { opacity: 1; pointer-events: all; }
+  .badge-box { background: var(--surface); border-radius: 24px; padding: 36px 40px; text-align: center; box-shadow: var(--shadow-lg); transform: scale(0.85); transition: transform 0.3s; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .badge-overlay.open .badge-box { transform: scale(1); }
+  .badge-emoji { font-size: 4rem; animation: badgePop 0.5s ease; }
+  @keyframes badgePop { 0% { transform:scale(0); } 60% { transform:scale(1.2); } 100% { transform:scale(1); } }
+  .badge-title { font-size: 1.3rem; font-weight: 700; color: var(--primary-dark); }
+  .badge-sub { font-size: 0.9rem; color: var(--text-muted); }
+  .badge-close-btn { margin-top: 8px; padding: 10px 32px; background: var(--primary); color: #fff; border: none; border-radius: 12px; font-size: 0.95rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .badge-close-btn:hover { background: var(--primary-dark); }
+
   /* ── Toast ── */
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px);
-    background: var(--primary-dark); color: #fff; padding: 10px 20px;
-    border-radius: 24px; font-size: 0.85rem; font-weight: 600;
-    opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 300; white-space: nowrap;
-  }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--primary-dark); color: #fff; padding: 10px 20px; border-radius: 24px; font-size: 0.85rem; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 400; white-space: nowrap; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ── Responsive ── */
+  /* ── TTS ── */
+  .tts-btn { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; font-size: 0.78rem; background: none; border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer; color: var(--text-muted); transition: all 0.2s; vertical-align: middle; margin-right: 4px; flex-shrink: 0; }
+  .tts-btn:hover { border-color: var(--primary); color: var(--primary-dark); background: var(--primary-light); }
+  .tts-btn.speaking { border-color: var(--accent); color: var(--accent); background: #fff8f4; }
+  .tts-rate-bar { display: flex; align-items: center; gap: 4px; margin-left: 6px; }
+  .tts-rate-btn { padding: 3px 8px; font-size: 0.72rem; font-family: inherit; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 6px; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+  .tts-rate-btn:hover { border-color: var(--primary); color: var(--primary-dark); }
+  .tts-rate-btn.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); font-weight: 700; }
+
+  /* ── Error bubble ── */
+  .bubble.error-bubble { background: #fff5f5; border: 1.5px solid #f5c6c6; }
+  .error-msg { color: #b85c5c; line-height: 1.75; white-space: pre-line; }
+  .retry-btn {
+    display: inline-block; margin-top: 10px; padding: 6px 16px;
+    background: none; border: 1.5px solid #b85c5c; border-radius: 8px;
+    color: #b85c5c; font-family: inherit; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .retry-btn:hover { background: #fff0f0; }
+
+  /* ── Step3 done / Step4 clear panels ── */
+  .quest-done-panel { display: none; padding-top: 10px; border-top: 1.5px dashed var(--primary); margin-top: 10px; }
+  .quest-done-panel.visible { display: block; }
+  .quest-done-hint { font-size: 0.78rem; color: var(--primary-dark); font-weight: 600; margin-bottom: 10px; }
+  .quest-choice-row { display: flex; gap: 10px; }
+  .choice-btn {
+    flex: 1; padding: 11px 10px; border: none; border-radius: 12px;
+    font-size: 0.83rem; font-family: inherit; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; line-height: 1.5; text-align: center;
+  }
+  .choice-btn.insight { background: var(--primary); color: #fff; }
+  .choice-btn.insight:hover { background: var(--primary-dark); }
+  .choice-btn.deepdive-go { background: var(--surface2); color: var(--primary-dark); border: 1.5px solid var(--primary); }
+  .choice-btn.deepdive-go:hover { background: var(--primary-light); }
+  .choice-btn .badge-label { font-size: 0.68rem; opacity: 0.85; display: block; font-weight: 500; margin-top: 2px; }
+  .deepdive-clear-btn {
+    width: 100%; padding: 11px; background: var(--accent); color: #fff; border: none;
+    border-radius: 12px; font-size: 0.88rem; font-family: inherit; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; margin-top: 10px;
+    border-top: 1.5px dashed var(--accent); padding-top: 11px; display: none;
+  }
+  .deepdive-clear-btn.visible { display: block; }
+  .deepdive-clear-btn:hover { opacity: 0.88; }
+
   @media (max-width: 640px) {
     .sidebar { display: none; }
     .chat-messages { padding: 16px; }
@@ -501,16 +283,65 @@
 <div class="header">
   <div class="logo">Emma's <span>English</span> Lab</div>
   <div class="header-status">
-<div class="status-dot" id="statusDot"></div>
+    <div class="status-dot" id="statusDot"></div>
     <span id="statusText" style="font-size:0.75rem;color:var(--text-muted)">未接続</span>
   </div>
-  <button class="settings-btn" id="settingsBtn" onclick="toggleSettings()" title="設定">⚙️</button>
+  <div class="tts-rate-bar" id="ttsRateBar">
+    <span style="font-size:0.72rem;color:var(--text-muted)">🔊</span>
+    <button class="tts-rate-btn" onclick="setTtsRate(0.5,this)">0.5×</button>
+    <button class="tts-rate-btn active" onclick="setTtsRate(1.0,this)">1.0×</button>
+    <button class="tts-rate-btn" onclick="setTtsRate(1.5,this)">1.5×</button>
+  </div>
+  <button class="icon-btn" onclick="openQuestModal()" title="クエスト">⚔️</button>
+  <button class="icon-btn" id="settingsBtn" onclick="toggleSettings()" title="設定">⚙️</button>
 </div>
 
 <!-- Settings overlay -->
 <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
 
-<!-- Resume modal (shown on page load if sessions exist) -->
+<!-- Settings drawer -->
+<div class="settings-drawer" id="settingsDrawer">
+  <div class="drawer-header">
+    <div class="drawer-title">⚙️ 設定</div>
+    <button class="drawer-close" onclick="closeSettings()">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-section">
+      <div class="drawer-section-title">API キー</div>
+      <div class="drawer-input-row">
+        <input type="password" class="drawer-input" id="apiKeyInput" placeholder="sk-ant-..." oninput="onApiKeyInput()">
+        <button class="drawer-save-btn" onclick="saveApiKey()">保存</button>
+      </div>
+      <div class="api-key-note">
+        APIキーは <strong>このブラウザのみ</strong> に保存されます。<br>
+        キーは <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a> で確認できます。
+      </div>
+      <div class="connection-status" id="connectionStatus">
+        <div class="dot"></div>
+        <span class="msg-text" id="connectionText">APIキーを入力してください</span>
+      </div>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-title">クレジット残高</div>
+      <a class="console-link" href="https://console.anthropic.com/settings/billing" target="_blank">
+        🔗 Anthropic コンソールで確認
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Quest modal -->
+<div class="modal-overlay" id="questModal">
+  <div class="modal-box" style="width:520px">
+    <div class="modal-header">
+      <div class="modal-title">⚔️ クエスト一覧</div>
+      <button class="modal-close" onclick="closeQuestModal()">✕</button>
+    </div>
+    <div class="modal-body" id="questList"></div>
+  </div>
+</div>
+
+<!-- Resume modal -->
 <div class="modal-overlay" id="resumeModal">
   <div class="modal-box">
     <div class="modal-header">
@@ -541,84 +372,60 @@
   </div>
 </div>
 
-<!-- Toast -->
-<div class="toast" id="toast"></div>
-
-<!-- Settings drawer -->
-<div class="settings-drawer" id="settingsDrawer">
-  <div class="drawer-header">
-    <div class="drawer-title">⚙️ 設定</div>
-    <button class="drawer-close" onclick="closeSettings()">✕</button>
-  </div>
-  <div class="drawer-body">
-
-    <!-- API Key section -->
-    <div class="drawer-section">
-      <div class="drawer-section-title">API キー</div>
-      <div class="drawer-input-row">
-        <input type="password" class="drawer-input" id="apiKeyInput" placeholder="sk-ant-..." oninput="onApiKeyInput()">
-        <button class="drawer-save-btn" onclick="saveApiKey()">保存</button>
-      </div>
-      <div class="api-key-note">
-        APIキーは <strong>このブラウザのみ</strong> に保存されます。<br>
-        キーは <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a> で確認できます。
-      </div>
-
-      <!-- Connection status -->
-      <div class="connection-status" id="connectionStatus">
-        <div class="dot"></div>
-        <span class="msg-text" id="connectionText">APIキーを入力してください</span>
-      </div>
-    </div>
-
-    <!-- Credit section -->
-    <div class="drawer-section">
-      <div class="drawer-section-title">クレジット残高</div>
-      <a class="console-link" href="https://console.anthropic.com/settings/billing" target="_blank">
-        🔗 Anthropic コンソールで確認
-      </a>
-    </div>
-
+<!-- Badge overlay -->
+<div class="badge-overlay" id="badgeOverlay">
+  <div class="badge-box">
+    <div class="badge-emoji" id="badgeEmoji">🏅</div>
+    <div class="badge-title" id="badgeTitle">クエストクリア！</div>
+    <div class="badge-sub" id="badgeSub"></div>
+    <button class="badge-close-btn" onclick="closeBadge()">つぎへ</button>
   </div>
 </div>
 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <!-- Main -->
 <div class="main">
-  <!-- Sidebar -->
   <div class="sidebar">
     <div class="sidebar-title">学習ステップ</div>
-    <div class="step-item" id="sideStep1">
-      <div class="step-num">1</div>
-      <div class="step-label">例文を生成する</div>
-    </div>
+    <div class="step-item" id="sideStep1"><div class="step-num">1</div><div class="step-label">例文を生成する</div></div>
     <div class="step-connector" id="conn1"></div>
-    <div class="step-item" id="sideStep2">
-      <div class="step-num">2</div>
-      <div class="step-label">比較・検討する</div>
-    </div>
+    <div class="step-item" id="sideStep2"><div class="step-num">2</div><div class="step-label">比較・検討する</div></div>
     <div class="step-connector" id="conn2"></div>
-    <div class="step-item" id="sideStep3">
-      <div class="step-num">3</div>
-      <div class="step-label">推論を確かめる</div>
-    </div>
+    <div class="step-item" id="sideStep3"><div class="step-num">3</div><div class="step-label">推論を確かめる</div></div>
     <div class="step-connector" id="conn3"></div>
-    <div class="step-item" id="sideStep4">
-      <div class="step-num">4</div>
-      <div class="step-label">構文解説（任意）</div>
+    <div class="step-item" id="sideStep4"><div class="step-num">4</div><div class="step-label">構文解説（任意）</div></div>
+
+    <!-- Quest progress -->
+    <div class="quest-progress-box" id="questProgressBox">
+      <div class="qp-title">クエスト進捗</div>
+      <div class="qp-words" id="qpWords"></div>
+      <div class="qp-dots">
+        <div class="qp-dot" id="qpDot1"></div>
+        <div class="qp-dot" id="qpDot2"></div>
+        <div class="qp-dot" id="qpDot3"></div>
+      </div>
+      <div class="qp-step-labels">
+        <div class="qp-step-label" id="qpLabel1" style="font-size:0.62rem">例文</div>
+        <div class="qp-step-label" id="qpLabel2" style="font-size:0.62rem">推論</div>
+        <div class="qp-step-label" id="qpLabel3" style="font-size:0.62rem">英訳</div>
+      </div>
+      <!-- clear button moved to input panel -->
     </div>
+
     <div class="sidebar-footer">
-      <button class="save-session-btn" id="saveSessionBtn" onclick="saveSession()" disabled>💾 このセッションを保存</button>
+      <button class="save-session-btn" id="saveSessionBtn" onclick="saveSession()" disabled>💾 保存</button>
+      <button class="history-btn" onclick="exportCurrentSession()">📄 Wordで出力</button>
       <button class="history-btn" onclick="openHistoryModal()">📋 保存済み履歴</button>
       <button class="restart-btn" onclick="restart()">最初からやり直す</button>
     </div>
   </div>
 
-  <!-- Chat area -->
   <div class="chat-area">
     <div class="chat-messages" id="chatMessages"></div>
-
-    <!-- Input panel -->
     <div class="input-panel" id="inputPanel">
+
       <!-- Step 1 -->
       <div class="step1-panel" id="step1Panel">
         <div class="field-row">
@@ -629,6 +436,18 @@
           <div class="field-group" style="flex:1.5">
             <label>テーマ（任意）</label>
             <input type="text" id="themeInput" placeholder="例: ビジネス・恋愛ドラマ・ニュース">
+            <div class="preset-row">
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='映画・ドラマ'">🎬 映画・ドラマ</button>
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='ニュース'">📰 ニュース</button>
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='ビジネス'">💼 ビジネス</button>
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='恋愛'">❤️ 恋愛</button>
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='医療・健康'">🏥 医療・健康</button>
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='旅行'">✈️ 旅行</button>
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='食事・グルメ'">🍽️ 食事・グルメ</button>
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='学術・研究'">🎓 学術・研究</button>
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='テクノロジー'">💻 テクノロジー</button>
+              <button type="button" class="preset-btn" onclick="document.getElementById('themeInput').value='スポーツ'">🏃 スポーツ</button>
+            </div>
           </div>
           <div class="field-group" style="flex:0 0 auto; justify-content: flex-end;">
             <label style="opacity:0">　</label>
@@ -665,25 +484,109 @@
         </div>
         <div class="step-action-row">
           <button class="next-btn" onclick="goToStep2()">← Step2 に戻る</button>
-          <button class="next-btn" onclick="requestSyntax()">Step4：構文解説を見る</button>
         </div>
+        <!-- Step3完了後に表示 -->
+        <div class="quest-done-panel" id="step3DonePanel">
+          <div class="quest-done-hint">✅ Step3完了！このまま仕上げますか？</div>
+          <div class="quest-choice-row">
+            <button class="choice-btn insight" onclick="clearQuest('insight')">
+              クリアする ✅<span class="badge-label">バッジ：⚡ Insight</span>
+            </button>
+            <button class="choice-btn deepdive-go" onclick="requestSyntax()">
+              構文まで分析する 🔬<span class="badge-label">バッジ：🎓 Maestry</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step4完了後のDeep Diveクリアボタン（step2パネル内） -->
+      <div id="step2Panel" style="display:none">
+        <div class="input-hint">Emmaに気づいたことや疑問を自由に聞いてみましょう。</div>
+        <div class="chat-input-row">
+          <textarea id="step2Input" placeholder="例: speak と talk の違いはどこで感じましたか？" rows="1" oninput="autoResize(this)" onkeydown="handleChatKey(event,'step2')"></textarea>
+          <button class="send-btn" id="step2SendBtn" onclick="sendStep2()">送信</button>
+        </div>
+        <div class="step-action-row">
+          <button class="next-btn" onclick="goToStep3()">→ Step3：推論を確かめる</button>
+        </div>
+        <button class="deepdive-clear-btn" id="deepdiveClearBtn" onclick="clearQuest('deepdive')">
+          🎓 クリアする ✅　バッジ：Maestry
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// ─── State ───────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// QUEST DATA
+// ════════════════════════════════════════════════════════════
+const QUEST_DATA = [
+  { level: 'beginner', label: '🟢 中学レベル', cls: 'green', badge: '🥉', quests: [
+    { id: 'b1',  words: 'see / look / watch' },
+    { id: 'b2',  words: 'say / tell / speak / talk' },
+    { id: 'b3',  words: 'go / come' },
+    { id: 'b4',  words: 'make / do' },
+    { id: 'b5',  words: 'get / take' },
+    { id: 'b6',  words: 'have / hold' },
+    { id: 'b7',  words: 'think / consider' },
+    { id: 'b8',  words: 'know / understand' },
+    { id: 'b9',  words: 'like / love / enjoy' },
+    { id: 'b10', words: 'want / need / wish' },
+    { id: 'b11', words: 'start / begin' },
+    { id: 'b12', words: 'stop / quit / finish' },
+    { id: 'b13', words: 'bring / take / carry' },
+    { id: 'b14', words: 'hear / listen' },
+    { id: 'b15', words: 'see / meet' },
+  ]},
+  { level: 'high', label: '🟡 高校レベル', cls: 'yellow', badge: '🥈', unlockLevel: 'beginner', unlockLabel: '中学レベル全クリアで解放', quests: [
+    { id: 'h1',  words: 'find / discover / notice' },
+    { id: 'h2',  words: 'show / demonstrate / present' },
+    { id: 'h3',  words: 'suggest / propose / recommend' },
+    { id: 'h4',  words: 'increase / grow / rise / raise' },
+    { id: 'h5',  words: 'change / alter / modify' },
+    { id: 'h6',  words: 'affect / influence / impact' },
+    { id: 'h7',  words: 'support / help / assist' },
+    { id: 'h8',  words: 'require / demand / need' },
+    { id: 'h9',  words: 'provide / offer / supply' },
+    { id: 'h10', words: 'allow / permit / enable' },
+    { id: 'h11', words: 'think / believe / suppose' },
+    { id: 'h12', words: 'look / seem / appear' },
+    { id: 'h13', words: 'keep / stay / remain' },
+    { id: 'h14', words: 'use / utilize / employ' },
+    { id: 'h15', words: 'tell / inform / notify' },
+  ]},
+  { level: 'advanced', label: '🔴 発展レベル', cls: 'red', badge: '🥇', unlockLevel: 'high', unlockLabel: '高校レベル全クリアで解放', quests: [
+    { id: 'a1',  words: 'feel / sense / notice' },
+    { id: 'a2',  words: 'worry / concern / bother' },
+    { id: 'a3',  words: 'hope / wish / expect' },
+    { id: 'a4',  words: 'remember / recall / remind' },
+    { id: 'a5',  words: 'forget / leave / miss' },
+    { id: 'a6',  words: 'agree / accept / approve' },
+    { id: 'a7',  words: 'refuse / reject / decline' },
+    { id: 'a8',  words: 'complain / protest / object' },
+    { id: 'a9',  words: 'apologize / excuse / forgive' },
+    { id: 'a10', words: 'succeed / achieve / accomplish' },
+  ]},
+];
+
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
 let apiKey = '';
 let currentStep = 1;
 let learnedWords = [];
 let theme = '';
 let useAdverb = false;
 let conversationHistory = [];
-let chatLog = []; // {role, html} pairs for visual restore
+let chatLog = [];
 let isLoading = false;
+let activeQuestId = null;
+let questSteps = { s1: false, s2: false, s3: false };
 
-// ─── Init ─────────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
 window.onload = () => {
   const saved = localStorage.getItem('emma_api_key');
   if (saved) {
@@ -691,14 +594,16 @@ window.onload = () => {
     document.getElementById('apiKeyInput').value = saved;
     updateConnectionStatus(saved.startsWith('sk-ant-') ? 'ok' : 'idle');
   }
+  initTts();
   checkForSavedSessions();
 };
 
-// ─── Settings Drawer ─────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// SETTINGS DRAWER
+// ════════════════════════════════════════════════════════════
 function toggleSettings() {
-  const drawer = document.getElementById('settingsDrawer');
-  if (drawer.classList.contains('open')) closeSettings();
-  else openSettings();
+  const d = document.getElementById('settingsDrawer');
+  d.classList.contains('open') ? closeSettings() : openSettings();
 }
 function openSettings() {
   document.getElementById('settingsDrawer').classList.add('open');
@@ -710,48 +615,191 @@ function closeSettings() {
   document.getElementById('settingsOverlay').classList.remove('open');
   document.getElementById('settingsBtn').classList.remove('active');
 }
-
-// ─── API Key ──────────────────────────────────────────────────────────────────
 function onApiKeyInput() {
-  const val = document.getElementById('apiKeyInput').value.trim();
-  updateConnectionStatus(val.startsWith('sk-ant-') ? 'ok' : 'idle');
+  const v = document.getElementById('apiKeyInput').value.trim();
+  updateConnectionStatus(v.startsWith('sk-ant-') ? 'ok' : 'idle');
 }
-
 function saveApiKey() {
   apiKey = document.getElementById('apiKeyInput').value.trim();
   localStorage.setItem('emma_api_key', apiKey);
-  if (apiKey.startsWith('sk-ant-')) {
-    updateConnectionStatus('ok');
-  } else {
-    updateConnectionStatus('idle');
-  }
+  updateConnectionStatus(apiKey.startsWith('sk-ant-') ? 'ok' : 'idle');
 }
-
 function updateConnectionStatus(state) {
-  const statusDot = document.getElementById('statusDot');
-  const statusText = document.getElementById('statusText');
-  const connEl = document.getElementById('connectionStatus');
-  const connText = document.getElementById('connectionText');
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  const el = document.getElementById('connectionStatus');
+  const ct = document.getElementById('connectionText');
   if (state === 'ok') {
-    statusDot.className = 'status-dot ok';
-    statusText.textContent = '接続済み';
-    connEl.className = 'connection-status ok';
-    connText.textContent = 'APIキーが設定されています';
+    dot.className = 'status-dot ok'; txt.textContent = '接続済み';
+    el.className = 'connection-status ok'; ct.textContent = 'APIキーが設定されています';
   } else if (state === 'error') {
-    statusDot.className = 'status-dot error';
-    statusText.textContent = 'エラー';
-    connEl.className = 'connection-status error';
-    connText.textContent = 'APIキーが無効です';
+    dot.className = 'status-dot error'; txt.textContent = 'エラー';
+    el.className = 'connection-status error'; ct.textContent = 'APIキーが無効です';
   } else {
-    statusDot.className = 'status-dot';
-    statusText.textContent = '未接続';
-    connEl.className = 'connection-status';
-    connText.textContent = 'APIキーを入力して保存してください';
+    dot.className = 'status-dot'; txt.textContent = '未接続';
+    el.className = 'connection-status'; ct.textContent = 'APIキーを入力して保存してください';
   }
 }
 
+// ════════════════════════════════════════════════════════════
+// QUEST MODAL
+// ════════════════════════════════════════════════════════════
+function openQuestModal() {
+  renderQuestList();
+  document.getElementById('questModal').classList.add('open');
+}
+function closeQuestModal() {
+  document.getElementById('questModal').classList.remove('open');
+}
 
-// ─── Step navigation ──────────────────────────────────────────────────────────
+function getQuestStatuses() {
+  try { return JSON.parse(localStorage.getItem('emma_quests') || '{}'); } catch { return {}; }
+}
+function setQuestCleared(id) {
+  const s = getQuestStatuses(); s[id] = 'cleared';
+  localStorage.setItem('emma_quests', JSON.stringify(s));
+}
+
+function isLevelUnlocked(levelDef) {
+  if (!levelDef.unlockLevel) return true;
+  const statuses = getQuestStatuses();
+  const group = QUEST_DATA.find(g => g.level === levelDef.unlockLevel);
+  return group && group.quests.every(q => statuses[q.id] === 'cleared');
+}
+
+function renderQuestList() {
+  const statuses = getQuestStatuses();
+  const container = document.getElementById('questList');
+  container.innerHTML = '';
+
+  QUEST_DATA.forEach(group => {
+    const unlocked = isLevelUnlocked(group);
+    const section = document.createElement('div');
+    section.className = 'quest-level-section';
+
+    const header = document.createElement('div');
+    header.className = `quest-level-header ${group.cls}`;
+    const cleared = group.quests.filter(q => statuses[q.id] === 'cleared').length;
+    header.innerHTML = `<span class="quest-level-label">${group.label}</span>
+      <span style="font-size:0.75rem;color:var(--text-muted);margin-left:8px">${cleared}/${group.quests.length}</span>
+      ${!unlocked ? `<span class="quest-level-lock">🔒 ${group.unlockLabel}</span>` : ''}`;
+    section.appendChild(header);
+
+    group.quests.forEach(q => {
+      const status = statuses[q.id];
+      const isActive = q.id === activeQuestId;
+      let icon = unlocked ? (status === 'cleared' ? '✅' : isActive ? '▶️' : '○') : '🔒';
+      const item = document.createElement('div');
+      item.className = 'quest-item' + (!unlocked ? ' locked' : '') + (isActive ? ' active-quest' : '');
+      item.innerHTML = `<span class="quest-icon">${icon}</span><span class="quest-words-text">${q.words}</span>`;
+      if (unlocked) item.onclick = () => selectQuest(q);
+      section.appendChild(item);
+    });
+    container.appendChild(section);
+  });
+}
+
+function selectQuest(quest) {
+  activeQuestId = quest.id;
+  questSteps = { s1: false, s2: false, s3: false };
+
+  // Auto-fill words input
+  document.getElementById('wordsInput').value = quest.words;
+  document.getElementById('themeInput').value = '';
+
+  closeQuestModal();
+  updateQuestProgressUI();
+
+  // Scroll to input area & focus
+  setTimeout(() => {
+    document.getElementById('inputPanel').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('wordsInput').focus();
+  }, 200);
+
+  showToast(`⚔️ クエスト開始：${quest.words}`);
+}
+
+// ════════════════════════════════════════════════════════════
+// QUEST PROGRESS
+// ════════════════════════════════════════════════════════════
+function updateQuestProgressUI() {
+  const box = document.getElementById('questProgressBox');
+  if (!activeQuestId) { box.classList.remove('visible'); return; }
+
+  // Find quest words
+  let questWords = '';
+  for (const g of QUEST_DATA) {
+    const q = g.quests.find(q => q.id === activeQuestId);
+    if (q) { questWords = q.words; break; }
+  }
+
+  box.classList.add('visible');
+  document.getElementById('qpWords').textContent = questWords;
+
+  const steps = [questSteps.s1, questSteps.s2, questSteps.s3];
+  const labels = ['例文', '推論', '英訳'];
+  steps.forEach((done, i) => {
+    const dot = document.getElementById(`qpDot${i+1}`);
+    const lbl = document.getElementById(`qpLabel${i+1}`);
+    dot.className = 'qp-dot' + (done ? ' done' : (i === steps.indexOf(false) ? ' active' : ''));
+    lbl.className = 'qp-step-label' + (done ? ' done' : '');
+    lbl.textContent = (done ? '✓ ' : '') + labels[i];
+  });
+
+  // clear button is now in input panels, not sidebar
+}
+
+function markQuestStep(stepKey) {
+  if (!activeQuestId || questSteps[stepKey]) return;
+  questSteps[stepKey] = true;
+  updateQuestProgressUI();
+}
+
+function clearQuest(badgeType = 'insight') {
+  if (!activeQuestId) return;
+  setQuestCleared(activeQuestId);
+
+  // Badge config
+  const BADGES = {
+    insight:  { emoji: '⚡', title: 'Insight',  sub: 'アブダクション推論で単語の違いを掴みました！' },
+    deepdive: { emoji: '🎓', title: 'Maestry',  sub: '構文まで深掘り分析しました！' },
+  };
+  const badge = BADGES[badgeType] || BADGES.insight;
+
+  // Check if level completed → upgrade sub message
+  const statuses = getQuestStatuses();
+  let levelLabel = ''; let levelBadge = '🏅'; let levelCount = 0; let levelCleared = false;
+  for (const g of QUEST_DATA) {
+    if (g.quests.find(q => q.id === activeQuestId)) {
+      levelLabel = g.label; levelBadge = g.badge; levelCount = g.quests.length;
+      levelCleared = g.quests.every(q => statuses[q.id] === 'cleared');
+      break;
+    }
+  }
+
+  document.getElementById('badgeEmoji').textContent = levelCleared ? levelBadge : badge.emoji;
+  document.getElementById('badgeTitle').textContent = levelCleared
+    ? `${levelLabel} 全クリア！` : badge.title;
+  document.getElementById('badgeSub').textContent = levelCleared
+    ? `${levelCount}クエスト完了！次のレベルが解放されました` : badge.sub;
+
+  // Hide panels
+  document.getElementById('step3DonePanel').classList.remove('visible');
+  document.getElementById('deepdiveClearBtn').classList.remove('visible');
+
+  document.getElementById('badgeOverlay').classList.add('open');
+  activeQuestId = null;
+  questSteps = { s1: false, s2: false, s3: false };
+  updateQuestProgressUI();
+}
+
+function closeBadge() {
+  document.getElementById('badgeOverlay').classList.remove('open');
+}
+
+// ════════════════════════════════════════════════════════════
+// STEP NAVIGATION
+// ════════════════════════════════════════════════════════════
 function setStep(n) {
   currentStep = n;
   [1,2,3,4].forEach(i => {
@@ -763,11 +811,76 @@ function setStep(n) {
   document.getElementById('step1Panel').style.display = n === 1 ? 'block' : 'none';
   document.getElementById('step2Panel').style.display = n === 2 ? 'block' : 'none';
   document.getElementById('step3Panel').style.display = n === 3 ? 'block' : 'none';
+  if (n !== 3) document.getElementById('step3DonePanel').classList.remove('visible');
 }
 function goToStep2() { setStep(2); }
 function goToStep3() { setStep(3); }
 
-// ─── Message helpers ──────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// TTS (Web Speech API)
+// ════════════════════════════════════════════════════════════
+let ttsRate = 1.0;
+let _ttsActiveBtn = null;
+
+function initTts() {
+  if (!window.speechSynthesis) {
+    const bar = document.getElementById('ttsRateBar');
+    if (bar) bar.innerHTML = '<span style="font-size:0.72rem;color:#b85c5c">お使いのブラウザは音声読み上げに対応していません</span>';
+  }
+}
+
+function speakText(btn, text) {
+  if (!window.speechSynthesis) return;
+  // Stop current if any
+  if (_ttsActiveBtn) {
+    _ttsActiveBtn.textContent = '🔊';
+    _ttsActiveBtn.classList.remove('speaking');
+    _ttsActiveBtn = null;
+  }
+  window.speechSynthesis.cancel();
+  // Toggle off if same button clicked
+  if (btn._ttsPlaying) { btn._ttsPlaying = false; return; }
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US';
+  utter.rate = ttsRate;
+  const done = () => {
+    btn.textContent = '🔊';
+    btn.classList.remove('speaking');
+    btn._ttsPlaying = false;
+    _ttsActiveBtn = null;
+  };
+  utter.onend = done;
+  utter.onerror = done;
+  btn.textContent = '⏹️';
+  btn.classList.add('speaking');
+  btn._ttsPlaying = true;
+  _ttsActiveBtn = btn;
+  window.speechSynthesis.speak(utter);
+}
+
+function setTtsRate(rate, el) {
+  ttsRate = rate;
+  document.querySelectorAll('.tts-rate-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ════════════════════════════════════════════════════════════
+// EMMA EXPRESSION
+// ════════════════════════════════════════════════════════════
+function getEmmaExpression(text) {
+  if (/正解|素晴らしい|その通り|よくできました|Great|Excellent|Perfect|Correct/i.test(text)) return 'emma_happy';
+  if (/鋭い|気づき|面白い|予想外|Sharp|Interesting|Impressive/i.test(text)) return 'emma_surprise';
+  if (/惜しい|もう少し|ヒント|再考|Almost|Try again|Hint/i.test(text)) return 'emma_worry';
+  return 'emma_main';
+}
+function emmaAvHTML(expr) {
+  return `<img class="expr-img" src="英語アプリ画像/${expr}.png" alt="Emma" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="expr-fallback">E</div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// MESSAGE HELPERS
+// ════════════════════════════════════════════════════════════
 function addEmmaMessage(html, skipLog = false) {
   appendMsg(createMsg('emma', html));
   if (!skipLog) chatLog.push({ role: 'emma', html });
@@ -777,13 +890,12 @@ function addUserMessage(text, skipLog = false) {
   appendMsg(createMsg('user', html));
   if (!skipLog) chatLog.push({ role: 'user', html });
 }
-
 function createMsg(role, html) {
   const wrap = document.createElement('div');
   wrap.className = 'msg ' + role;
   const av = document.createElement('div');
   av.className = 'avatar ' + (role === 'emma' ? 'emma-av' : 'user-av');
-  if (role === 'emma') { av.innerHTML = '<img src="emma1.jpg" alt="Emma">'; } else { av.textContent = '🙋'; }
+  if (role === 'emma') { av.innerHTML = emmaAvHTML(getEmmaExpression(html)); } else { av.textContent = '🙋'; }
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   bubble.innerHTML = html;
@@ -799,58 +911,94 @@ function appendMsg(el) {
 function escapeHtml(t) {
   return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
-
 let typingEl = null;
 function showTyping() {
   const wrap = document.createElement('div');
-  wrap.className = 'msg emma';
-  wrap.id = 'typingMsg';
+  wrap.className = 'msg emma'; wrap.id = 'typingMsg';
   const av = document.createElement('div');
   av.className = 'avatar emma-av';
-  av.innerHTML = '<img src="emma1.jpg" alt="Emma">';
+  av.innerHTML = emmaAvHTML('emma_main');
   const ind = document.createElement('div');
   ind.className = 'typing-indicator';
   ind.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
-  wrap.appendChild(av);
-  wrap.appendChild(ind);
-  appendMsg(wrap);
-  typingEl = wrap;
+  wrap.appendChild(av); wrap.appendChild(ind);
+  appendMsg(wrap); typingEl = wrap;
 }
-function hideTyping() {
-  if (typingEl) { typingEl.remove(); typingEl = null; }
-}
+function hideTyping() { if (typingEl) { typingEl.remove(); typingEl = null; } }
 
-// ─── Claude API ───────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// CLAUDE API
+// ════════════════════════════════════════════════════════════
 async function callClaude(messages, systemPrompt, maxTokens = 2000) {
-  if (!apiKey) {
-    addEmmaMessage('⚠️ APIキーが設定されていません。右上の ⚙️ から設定してください。');
-    return null;
+  if (!apiKey) { addEmmaMessage('⚠️ APIキーが設定されていません。右上の ⚙️ から設定してください。'); return null; }
+  let httpStatus = null;
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: maxTokens, system: systemPrompt, messages })
+    });
+    httpStatus = resp.status;
+    if (!resp.ok) {
+      const errData = await resp.json().catch(() => ({}));
+      if (resp.status === 401) updateConnectionStatus('error');
+      const e = new Error(errData.error?.message || `HTTP ${resp.status}`);
+      e.httpStatus = resp.status;
+      e.errorType = errData.error?.type || '';
+      throw e;
+    }
+    return (await resp.json()).content[0].text;
+  } catch(e) {
+    if (!e.httpStatus) e.isNetworkError = true;
+    throw e;
   }
-  const payload = {
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: maxTokens,
-    system: systemPrompt,
-    messages: messages
-  };
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify(payload)
-  });
-  if (!resp.ok) {
-    const err = await resp.json().catch(() => ({}));
-    if (resp.status === 401) updateConnectionStatus('error');
-    throw new Error(err.error?.message || `HTTP ${resp.status}`);
-  }
-  return (await resp.json()).content[0].text;
 }
 
-// ─── Step 1 ───────────────────────────────────────────────────────────────────
+// ── Error handling ──────────────────────────────────────────
+const API_ERROR_MSGS = {
+  credit:      '💳 クレジットが不足しています。\nconsole.anthropic.com でチャージしてください。',
+  invalid_key: '🔑 APIキーが正しくありません。\n画面上部の ⚙️ からAPIキーを確認してください。',
+  network:     '🌐 通信エラーが発生しました。\nインターネット接続を確認して再試行してください。',
+  other:       '⚠️ エラーが発生しました。\nしばらく待ってから再試行してください。',
+};
+
+function classifyError(e) {
+  if (e.isNetworkError || !navigator.onLine) return 'network';
+  if (e.httpStatus === 401) return 'invalid_key';
+  if (e.httpStatus === 402 || e.errorType === 'billing_error' ||
+      /credit|billing/i.test(e.message || '')) return 'credit';
+  return 'other';
+}
+
+let _retryStore = {};
+let _retryCount = 0;
+
+function showApiError(e, retryFn) {
+  const type = classifyError(e);
+  const msg = API_ERROR_MSGS[type];
+  const rid = retryFn ? 'r' + (_retryCount++) : null;
+  if (rid) _retryStore[rid] = retryFn;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'msg emma';
+  const av = document.createElement('div');
+  av.className = 'avatar emma-av';
+  av.innerHTML = emmaAvHTML('emma_worry');
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble error-bubble';
+  bubble.innerHTML = `<div class="error-msg">${msg}</div>${rid ? `<button class="retry-btn" onclick="doRetry('${rid}')">🔄 再試行する</button>` : ''}`;
+  wrap.appendChild(av); wrap.appendChild(bubble);
+  appendMsg(wrap);
+}
+
+function doRetry(rid) {
+  const fn = _retryStore[rid];
+  if (fn) { delete _retryStore[rid]; fn(); }
+}
+
+// ════════════════════════════════════════════════════════════
+// STEP 1
+// ════════════════════════════════════════════════════════════
 async function startGeneration() {
   if (isLoading) return;
   const rawWords = document.getElementById('wordsInput').value.trim();
@@ -866,7 +1014,6 @@ async function startGeneration() {
   const adverbStr = useAdverb ? '副詞を必ず1つ含めてください。' : '副詞は不要です。';
 
   addUserMessage(`単語：${wordStr}\n${themeStr}\n副詞：${useAdverb ? 'あり' : 'なし'}`);
-
   isLoading = true;
   document.getElementById('generateBtn').disabled = true;
   showTyping();
@@ -880,55 +1027,65 @@ async function startGeneration() {
 返答はすべて日本語で行ってください。`;
 
   const prompt = `以下の単語それぞれについて、10個ずつ英語例文を作ってください。
-
 単語リスト：${wordStr}
 ${themeStr}
 ${adverbStr}
-
 ## 出力フォーマット
 各単語ごとにセクションを分けて、以下の形式で出力してください：
-
 ### [単語]
-
 1. [英語例文] — [日本語訳]
 （以下10個まで）
-
 ## 重要なルール
 - 例文中の対象単語は **太字（**word**）** にしてください
 - ${useAdverb ? '副詞も **太字** にしてください' : ''}
 - テーマに沿った自然な文を作ること
-- 各単語の特徴的な使い方が例文に表れるようにすること（意味の解説はしない）
-- 最後に「どんなパターンに気づきましたか？」という短いメッセージをEmmaとして添えること`;
+- 各単語の特徴的な使い方が例文に表れるようにすること（意味の解説はしない）`;
 
-  try {
-    const result = await callClaude([{ role: 'user', content: prompt }], system, 4000);
-    hideTyping();
-    if (result) {
-      addEmmaMessage(formatSentencesHtml(result));
-      conversationHistory.push({ role: 'user', content: prompt });
-      conversationHistory.push({ role: 'assistant', content: result });
-      document.getElementById('saveSessionBtn').disabled = false;
-      setStep(2);
+  const callStep1 = async () => {
+    isLoading = true;
+    document.getElementById('generateBtn').disabled = true;
+    showTyping();
+    try {
+      const result = await callClaude([{ role: 'user', content: prompt }], system, 4000);
+      hideTyping();
+      if (result) {
+        addEmmaMessage(formatSentencesHtml(result));
+        conversationHistory.push({ role: 'user', content: prompt });
+        conversationHistory.push({ role: 'assistant', content: result });
+        document.getElementById('saveSessionBtn').disabled = false;
+        markQuestStep('s1');
+        setStep(2);
+      }
+    } catch(e) {
+      hideTyping();
+      showApiError(e, callStep1);
+    } finally {
+      isLoading = false;
+      document.getElementById('generateBtn').disabled = false;
     }
-  } catch(e) {
-    hideTyping();
-    addEmmaMessage('⚠️ エラーが発生しました：' + escapeHtml(e.message));
-  } finally {
-    isLoading = false;
-    document.getElementById('generateBtn').disabled = false;
-  }
+  };
+  await callStep1();
 }
 
 function formatSentencesHtml(text) {
-  return text
+  let html = text
     .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
     .replace(/### (.+)/g, '<div class="word-header">$1</div>')
     .replace(/## .+/g, '')
     .replace(/\n\n+/g, '<br><br>')
     .replace(/\n(\d+\.)/g, '<br>$1');
+  // Inject TTS button before each numbered sentence
+  html = html.replace(/(<br>)(\d+\.) ((.+?) — .+)/g, (_, br, num, rest, engHtml) => {
+    const plainEng = engHtml.replace(/<[^>]+>/g, '').trim();
+    const escaped = plainEng.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    return `${br}${num} <button class="tts-btn" title="読み上げ" onclick="speakText(this,'${escaped}')">🔊</button> ${rest}`;
+  });
+  return html;
 }
 
-// ─── Step 2 ───────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// STEP 2
+// ════════════════════════════════════════════════════════════
 async function sendStep2() {
   if (isLoading) return;
   const input = document.getElementById('step2Input');
@@ -949,22 +1106,34 @@ ${theme ? 'テーマ：' + theme : ''}
 - 説明を求められたときだけ、そのトピックに限定して詳しく答える。
 返答はすべて日本語で。`;
 
-  conversationHistory.push({ role: 'user', content: text });
-  try {
-    const result = await callClaude(conversationHistory, system, 1500);
-    hideTyping();
-    if (result) { addEmmaMessage(mdToHtml(result)); conversationHistory.push({ role: 'assistant', content: result }); }
-  } catch(e) {
-    hideTyping();
-    addEmmaMessage('⚠️ エラー：' + escapeHtml(e.message));
-    conversationHistory.pop();
-  } finally {
-    isLoading = false;
-    document.getElementById('step2SendBtn').disabled = false;
-  }
+  const callStep2 = async () => {
+    isLoading = true;
+    document.getElementById('step2SendBtn').disabled = true;
+    showTyping();
+    conversationHistory.push({ role: 'user', content: text });
+    try {
+      const result = await callClaude(conversationHistory, system, 1500);
+      hideTyping();
+      if (result) {
+        addEmmaMessage(mdToHtml(result));
+        conversationHistory.push({ role: 'assistant', content: result });
+        markQuestStep('s2');
+      }
+    } catch(e) {
+      hideTyping();
+      conversationHistory.pop();
+      showApiError(e, callStep2);
+    } finally {
+      isLoading = false;
+      document.getElementById('step2SendBtn').disabled = false;
+    }
+  };
+  await callStep2();
 }
 
-// ─── Step 3 ───────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// STEP 3
+// ════════════════════════════════════════════════════════════
 async function sendStep3() {
   if (isLoading) return;
   const input = document.getElementById('step3Input');
@@ -986,85 +1155,68 @@ ${theme ? 'テーマ：' + theme : ''}
 返答はすべて日本語で。`;
 
   const prompt = `以下の日本語文を英訳してください。学習中の単語（${learnedWords.join(', ')}）の中から最も適切なものを選んで使ってください。英訳と、選んだ単語が適切かどうかの判定（○・△・✕）のみを返してください。理由は書かないこと。\n\n日本語：「${text}」`;
-  conversationHistory.push({ role: 'user', content: prompt });
-  try {
-    const result = await callClaude(conversationHistory, system, 1000);
-    hideTyping();
-    if (result) { addEmmaMessage(mdToHtml(result)); conversationHistory.push({ role: 'assistant', content: result }); }
-  } catch(e) {
-    hideTyping();
-    addEmmaMessage('⚠️ エラー：' + escapeHtml(e.message));
-    conversationHistory.pop();
-  } finally {
-    isLoading = false;
-    document.getElementById('step3SendBtn').disabled = false;
-  }
+  const callStep3 = async () => {
+    isLoading = true;
+    document.getElementById('step3SendBtn').disabled = true;
+    showTyping();
+    conversationHistory.push({ role: 'user', content: prompt });
+    try {
+      const result = await callClaude(conversationHistory, system, 1000);
+      hideTyping();
+      if (result) {
+        addEmmaMessage(mdToHtml(result));
+        conversationHistory.push({ role: 'assistant', content: result });
+        markQuestStep('s3');
+        if (activeQuestId) document.getElementById('step3DonePanel').classList.add('visible');
+      }
+    } catch(e) {
+      hideTyping();
+      conversationHistory.pop();
+      showApiError(e, callStep3);
+    } finally {
+      isLoading = false;
+      document.getElementById('step3SendBtn').disabled = false;
+    }
+  };
+  await callStep3();
 }
 
-// ─── Step 4 ───────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// STEP 4
+// ════════════════════════════════════════════════════════════
 async function requestSyntax() {
   if (isLoading) return;
-  setStep(4);
-  isLoading = true;
-  showTyping();
-
+  setStep(4); isLoading = true; showTyping();
   const system = `あなたは明るく丁寧な英語教師のEmmaです。英語の構文・文法を日本人学習者にわかりやすく解説します。返答はすべて日本語で。`;
-  const prompt = `学習した単語（${learnedWords.join(', ')}）について、構文的な特徴と違いを比較してください。
-- 各単語が目的語として何を取るか（名詞・that節・to不定詞など）
-- 典型的な文型パターン
-- 使われる文法的な文脈の違い
-をまとめて説明してください。`;
-
-  conversationHistory.push({ role: 'user', content: prompt });
-  try {
-    const result = await callClaude(conversationHistory, system, 1500);
-    hideTyping();
-    if (result) { addEmmaMessage(mdToHtml(result)); conversationHistory.push({ role: 'assistant', content: result }); }
-  } catch(e) {
-    hideTyping();
-    addEmmaMessage('⚠️ エラー：' + escapeHtml(e.message));
-    conversationHistory.pop();
-  } finally {
-    isLoading = false;
-    document.getElementById('step2Panel').style.display = 'block';
-    document.getElementById('step3Panel').style.display = 'none';
-  }
+  const prompt = `学習した単語（${learnedWords.join(', ')}）について、構文的な特徴と違いを比較してください。\n- 各単語が目的語として何を取るか（名詞・that節・to不定詞など）\n- 典型的な文型パターン\n- 使われる文法的な文脈の違い\nをまとめて説明してください。`;
+  const callStep4 = async () => {
+    isLoading = true;
+    showTyping();
+    conversationHistory.push({ role: 'user', content: prompt });
+    try {
+      const result = await callClaude(conversationHistory, system, 1500);
+      hideTyping();
+      if (result) {
+        addEmmaMessage(mdToHtml(result));
+        conversationHistory.push({ role: 'assistant', content: result });
+        document.getElementById('step2Panel').style.display = 'block';
+        document.getElementById('step3Panel').style.display = 'none';
+        if (activeQuestId) document.getElementById('deepdiveClearBtn').classList.add('visible');
+      }
+    } catch(e) {
+      hideTyping();
+      conversationHistory.pop();
+      showApiError(e, callStep4);
+    } finally {
+      isLoading = false;
+    }
+  };
+  await callStep4();
 }
 
-// ─── Utilities ────────────────────────────────────────────────────────────────
-function mdToHtml(text) {
-  return text
-    .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
-    .replace(/#{1,3} (.+)/g, '<strong>$1</strong>')
-    .replace(/\n/g, '<br>');
-}
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-}
-function handleChatKey(e, step) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    if (step === 'step2') sendStep2();
-    else if (step === 'step3') sendStep3();
-  }
-}
-function restart() {
-  if (!confirm('最初からやり直しますか？')) return;
-  conversationHistory = []; chatLog = []; learnedWords = []; theme = ''; useAdverb = false; isLoading = false;
-  document.getElementById('chatMessages').innerHTML = '';
-  document.getElementById('wordsInput').value = '';
-  document.getElementById('themeInput').value = '';
-  document.getElementById('adverbCheck').checked = false;
-  document.getElementById('step2Input').value = '';
-  document.getElementById('step3Input').value = '';
-  document.getElementById('generateBtn').disabled = false;
-  document.getElementById('saveSessionBtn').disabled = true;
-  addEmmaMessage('こんにちは！わたしはEmmaです 🌿<br>英語の単語を一緒に深く学んでいきましょう。<br><br>まず、<strong>学びたい単語</strong>をスラッシュ区切りで入力して、テーマもあれば教えてください。');
-  setStep(1);
-}
-
-// ─── Session: Save ────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// SESSION: Save / Load / Resume
+// ════════════════════════════════════════════════════════════
 function saveSession() {
   if (!learnedWords.length) return;
   const sessions = loadAllSessions();
@@ -1073,105 +1225,76 @@ function saveSession() {
     id: now.getTime(),
     date: now.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' }),
     time: now.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }),
-    words: learnedWords,
-    theme,
-    useAdverb,
-    step: currentStep,
+    words: learnedWords, theme, useAdverb, step: currentStep,
     conversationHistory: JSON.parse(JSON.stringify(conversationHistory)),
     chatLog: JSON.parse(JSON.stringify(chatLog))
   };
-  // 同じ単語のセッションがあれば上書き、なければ先頭に追加
   const idx = sessions.findIndex(s => s.words.join('/') === learnedWords.join('/'));
   if (idx >= 0) sessions.splice(idx, 1);
   sessions.unshift(session);
-  // 最大10件保持
   if (sessions.length > 10) sessions.pop();
   localStorage.setItem('emma_sessions', JSON.stringify(sessions));
   showToast('💾 セッションを保存しました');
 }
-
-// ─── Session: Load all ────────────────────────────────────────────────────────
 function loadAllSessions() {
-  try { return JSON.parse(localStorage.getItem('emma_sessions') || '[]'); }
-  catch { return []; }
+  try { return JSON.parse(localStorage.getItem('emma_sessions') || '[]'); } catch { return []; }
 }
-
-// ─── Session: Check on page load ─────────────────────────────────────────────
 function checkForSavedSessions() {
   const sessions = loadAllSessions();
   if (sessions.length > 0) {
-    const latest = sessions[0];
-    document.getElementById('resumeWords').textContent = '📚 ' + latest.words.join(' / ');
-    document.getElementById('resumeMeta').textContent =
-      latest.date + ' ' + latest.time + (latest.theme ? '　テーマ：' + latest.theme : '') +
-      (latest.useAdverb ? '　副詞あり' : '');
+    const l = sessions[0];
+    document.getElementById('resumeWords').textContent = '📚 ' + l.words.join(' / ');
+    document.getElementById('resumeMeta').textContent = l.date + ' ' + l.time + (l.theme ? '　テーマ：' + l.theme : '') + (l.useAdverb ? '　副詞あり' : '');
     document.getElementById('resumeModal').classList.add('open');
-  } else {
-    startFresh();
-  }
+  } else { startFresh(); }
 }
-
 function closeResumeModal() {
   document.getElementById('resumeModal').classList.remove('open');
   startFresh();
 }
-
 function startFresh() {
-  addEmmaMessage(
-    'こんにちは！わたしはEmmaです 🌿<br>英語の単語を一緒に深く学んでいきましょう。<br><br>まず、<strong>学びたい単語</strong>をスラッシュ区切りで入力して、テーマもあれば教えてください。準備ができたら「例文を生成する」ボタンを押してください！'
-  );
+  addEmmaMessage('こんにちは！わたしはEmmaです 🌿<br>英語の単語を一緒に深く学んでいきましょう。<br><br>まず、<strong>学びたい単語</strong>をスラッシュ区切りで入力するか、⚔️ クエストから選んでください！');
   setStep(1);
 }
-
-// ─── Session: Resume ─────────────────────────────────────────────────────────
 function resumeLatestSession() {
   const sessions = loadAllSessions();
-  if (sessions.length === 0) return;
+  if (!sessions.length) return;
   document.getElementById('resumeModal').classList.remove('open');
   applySession(sessions[0]);
 }
-
 function applySession(session) {
-  // Restore state
-  learnedWords = session.words;
-  theme = session.theme;
-  useAdverb = session.useAdverb;
-  conversationHistory = session.conversationHistory;
-  chatLog = session.chatLog;
-
-  // Restore inputs
+  learnedWords = session.words; theme = session.theme; useAdverb = session.useAdverb;
+  conversationHistory = session.conversationHistory; chatLog = session.chatLog;
   document.getElementById('wordsInput').value = session.words.join(' / ');
   document.getElementById('themeInput').value = session.theme || '';
   document.getElementById('adverbCheck').checked = session.useAdverb;
-
-  // Restore chat visually (skip logging since already in chatLog)
   document.getElementById('chatMessages').innerHTML = '';
-  for (const entry of session.chatLog) {
-    appendMsg(createMsg(entry.role, entry.html));
-  }
+  for (const entry of session.chatLog) appendMsg(createMsg(entry.role, entry.html));
   addEmmaMessage('セッションを再開しました！引き続き一緒に学んでいきましょう 🌿', true);
-
   document.getElementById('saveSessionBtn').disabled = false;
   setStep(session.step || 2);
   closeHistoryModal();
 }
 
-// ─── Session: History modal ───────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// SESSION: History modal
+// ════════════════════════════════════════════════════════════
 function openHistoryModal() {
   const sessions = loadAllSessions();
   const list = document.getElementById('historyList');
   list.innerHTML = '';
-  if (sessions.length === 0) {
+  if (!sessions.length) {
     list.innerHTML = '<div class="history-empty">保存済みのセッションはありません</div>';
   } else {
     sessions.forEach(s => {
       const item = document.createElement('div');
       item.className = 'session-item';
-      item.innerHTML = `
-        <div class="session-words">📚 ${s.words.join(' / ')}</div>
-        <div class="session-meta">${s.date} ${s.time}${s.theme ? '　テーマ：' + s.theme : ''}${s.useAdverb ? '　副詞あり' : ''}</div>
+      const sJson = JSON.stringify(s).replace(/"/g, '&quot;');
+      item.innerHTML = `<div class="session-words">📚 ${s.words.join(' / ')}</div>
+        <div class="session-meta">${s.date} ${s.time}${s.theme ? '　テーマ：'+s.theme : ''}${s.useAdverb ? '　副詞あり' : ''}</div>
         <div class="session-btn-row">
-          <button class="session-resume-btn" onclick="applySession(${JSON.stringify(s).replace(/"/g,'&quot;')})">再開</button>
+          <button class="session-resume-btn" onclick="applySession(${sJson})">再開</button>
+          <button class="session-resume-btn" style="background:var(--accent)" onclick="exportSession(${sJson})">📄 Word</button>
           <button class="session-del-btn" onclick="deleteSession(${s.id})">削除</button>
         </div>`;
       list.appendChild(item);
@@ -1179,23 +1302,102 @@ function openHistoryModal() {
   }
   document.getElementById('historyModal').classList.add('open');
 }
-
-function closeHistoryModal() {
-  document.getElementById('historyModal').classList.remove('open');
-}
-
+function closeHistoryModal() { document.getElementById('historyModal').classList.remove('open'); }
 function deleteSession(id) {
   if (!confirm('このセッションを削除しますか？')) return;
   const sessions = loadAllSessions().filter(s => s.id !== id);
   localStorage.setItem('emma_sessions', JSON.stringify(sessions));
-  openHistoryModal(); // refresh list
+  openHistoryModal();
 }
 
-// ─── Toast ────────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+// EXPORT TO WORD
+// ════════════════════════════════════════════════════════════
+function exportCurrentSession() {
+  if (!learnedWords.length) { showToast('⚠️ 出力するセッションがありません'); return; }
+  const now = new Date();
+  exportSession({
+    words: learnedWords, theme, useAdverb,
+    date: now.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' }),
+    time: now.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }),
+    chatLog
+  });
+}
+function exportSession(session) {
+  let msgHtml = '';
+  for (const entry of session.chatLog) {
+    if (entry.role === 'emma') {
+      msgHtml += `<table width="100%" style="margin:10px 0"><tr>
+        <td width="36" valign="top" style="padding-right:10px"><div style="width:36px;height:36px;border-radius:50%;background:#6b8f71;text-align:center;line-height:36px;font-size:16px;color:#fff">E</div></td>
+        <td style="background:#eef4ef;border-radius:12px;padding:12px 14px;font-size:10.5pt;line-height:1.7">
+          <span style="font-size:8pt;color:#7a7672;font-weight:bold">Emma</span><br>${entry.html.replace(/<br>/g,'<br/>')}
+        </td></tr></table>`;
+    } else {
+      msgHtml += `<table width="100%" style="margin:10px 0"><tr>
+        <td style="background:#fff8f4;border:1px solid #e2dfd8;border-radius:12px;padding:12px 14px;font-size:10.5pt;line-height:1.7" align="right">
+          <span style="font-size:8pt;color:#7a7672;font-weight:bold">あなた</span><br>${entry.html.replace(/<br>/g,'<br/>')}
+        </td>
+        <td width="36" valign="top" style="padding-left:10px"><div style="width:36px;height:36px;border-radius:50%;background:#c9956e;text-align:center;line-height:36px;font-size:16px;color:#fff">🙋</div></td>
+        </tr></table>`;
+    }
+  }
+  const fileName = `Emma_${session.words.slice(0,3).join('_')}_${session.date.replace(/年|月/g,'-').replace('日','')}.doc`;
+  const html = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head><meta charset="UTF-8">
+<style>body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;font-size:11pt;color:#2d2d2d;margin:2cm 2.5cm}
+h1{font-size:18pt;color:#4a6b50;border-bottom:2px solid #6b8f71;padding-bottom:6pt}
+.meta-box{background:#f2f0eb;border-left:4px solid #6b8f71;padding:10px 14px;margin:14pt 0;font-size:10pt}
+.meta-box p{margin:3px 0}h2{font-size:13pt;color:#4a6b50;margin-top:20pt;border-bottom:1px solid #e2dfd8;padding-bottom:3pt}
+b{color:#4a6b50}</style></head>
+<body><h1>Emma's English Lab　学習レポート</h1>
+<div class="meta-box">
+<p>📚 <b>単語</b>：${session.words.join(' / ')}</p>
+${session.theme ? `<p>🎯 <b>テーマ</b>：${session.theme}</p>` : ''}
+<p>📅 <b>日時</b>：${session.date}　${session.time}</p>
+<p>🔤 <b>副詞</b>：${session.useAdverb ? 'あり' : 'なし'}</p>
+</div><h2>会話ログ</h2>${msgHtml}</body></html>`;
+  const blob = new Blob(['\ufeff' + html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = fileName; a.click();
+  URL.revokeObjectURL(url);
+  showToast('📄 Wordファイルを出力しました');
+}
+
+// ════════════════════════════════════════════════════════════
+// UTILITIES
+// ════════════════════════════════════════════════════════════
+function mdToHtml(text) {
+  return text.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/#{1,3} (.+)/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+}
+function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
+function handleChatKey(e, step) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if (step === 'step2') sendStep2(); else if (step === 'step3') sendStep3();
+  }
+}
+function restart() {
+  if (!confirm('最初からやり直しますか？')) return;
+  conversationHistory = []; chatLog = []; learnedWords = []; theme = ''; useAdverb = false; isLoading = false;
+  activeQuestId = null; questSteps = { s1: false, s2: false, s3: false };
+  document.getElementById('step3DonePanel').classList.remove('visible');
+  document.getElementById('deepdiveClearBtn').classList.remove('visible');
+  document.getElementById('chatMessages').innerHTML = '';
+  document.getElementById('wordsInput').value = '';
+  document.getElementById('themeInput').value = '';
+  document.getElementById('adverbCheck').checked = false;
+  document.getElementById('step2Input').value = '';
+  document.getElementById('step3Input').value = '';
+  document.getElementById('generateBtn').disabled = false;
+  document.getElementById('saveSessionBtn').disabled = true;
+  updateQuestProgressUI();
+  addEmmaMessage('こんにちは！わたしはEmmaです 🌿<br>英語の単語を一緒に深く学んでいきましょう。<br><br>まず、<strong>学びたい単語</strong>をスラッシュ区切りで入力するか、⚔️ クエストから選んでください！');
+  setStep(1);
+}
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 </script>
